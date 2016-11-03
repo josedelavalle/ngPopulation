@@ -1,0 +1,45 @@
+{
+  "name": "ng-graph",
+  "version": "1.0.0",
+  "description": "angular graph consuming rest api",
+  "main": "index.js",
+  "scripts": {
+    "dev": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ngGraph"
+  },
+  "keywords": [
+    "angular",
+    "graph",
+    "world",
+    "population",
+    "api"
+  ],
+  "author": "Jose DeLavalle",
+  "license": "ISC",
+  "devDependencies": {
+    "event-stream": "^3.3.4",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-jade": "^1.1.0",
+    "gulp-jshint": "^2.0.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-uglify": "^2.0.0",
+    "jshint": "^2.9.4",
+    "lite-server": "^2.2.2"
+  },
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-animate": "^1.5.8",
+    "angular-aria": "^1.5.8",
+    "angular-chart.js": "^1.0.3",
+    "angular-material": "^1.1.1",
+    "angular-resource": "^1.5.8",
+    "angular-route": "^1.5.8",
+    "bootstrap": "^3.3.7"
+  }
+}

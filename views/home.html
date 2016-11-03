@@ -1,0 +1,61 @@
+
+<div ng-include="'partials/intro.html'"></div>
+<!-- Main -->
+<div class="wrapper style2">
+  <div class="title"><h3 class="icon fa-area-chart"></h3></div>
+  <div id="main" class="container">
+
+    <h2>{{title}}</h2>
+
+    <!-- Image -->
+    <div ng-cloak>
+       <md-content>
+  	    <md-tabs md-dynamic-height md-border-bottom>
+  	      <md-tab label="Bar">
+  	        <md-content class="md-padding">
+
+  		          <canvas id="bar" class="chart chart-bar"
+  		            chart-data="data" chart-labels="labels" chart-series="series">
+  		          </canvas>
+  	        </md-content>
+  	      </md-tab>
+
+  	      <md-tab label="Line">
+  	        <md-content class="md-padding">
+
+  	          <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick"></canvas>
+  	        </md-content>
+  	      </md-tab>
+
+  	      <md-tab label="Pie">
+  	        <md-content class="md-padding">
+
+  	          <canvas id="pie" class="chart chart-pie"
+  	            chart-data="data" chart-labels="labels" chart-series="series" chart-options="options">
+  	          </canvas>
+  	        </md-content>
+  	      </md-tab>
+
+    		  <md-tab label="Donut">
+    		    <md-content class="md-padding">
+
+    		      <canvas id="doughnut" class="chart chart-doughnut"
+    		      	  chart-data="data" chart-labels="labels" chart-series="series">
+    		      </canvas>
+    		    </md-content>
+    		  </md-tab>
+
+  	      <md-tab label="Radar">
+  	        <md-content class="md-padding">
+
+  	          <canvas id="radar" class="chart chart-radar"
+  	            chart-data="data" chart-options="options" chart-labels="labels" chart-series="series">
+  	          </canvas>
+  	        </md-content>
+  	      </md-tab>
+        </md-tabs>
+  	  </md-content>
+    </div>
+  </div>
+</div>
+<div ng-include="'partials/highlights.html'"></div>

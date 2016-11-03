@@ -1,0 +1,69 @@
+<!-- Highlights -->
+  <div class="wrapper style3">
+    <div class="title"><h3 class="icon fa-arrows-alt"></h3></div>
+    <div id="highlights" class="container">
+      <!-- Features -->
+      <section id="features" ng-repeat="thisData in $parent.dataDetails">
+        <h2>{{thisData.name}}</h2>
+        <div class="feature-list">
+          <div class="row">
+            <div class="6u 12u(mobile)">
+              <section>
+                <h3 class="icon fa-comment">Capital</h3>
+                <p>{{thisData.capital}}</p>
+              </section>
+            </div>
+            <div class="6u 12u(mobile)">
+              <section>
+                <h3 class="icon fa-refresh">Population</h3>
+                <p>{{thisData.population}}</p>
+              </section>
+            </div>
+          </div>
+          <div class="row">
+            <div class="6u 12u(mobile)">
+              <section>
+                <h3 class="icon fa-picture-o">Currency</h3>
+                <span ng-repeat="thisCurrency in thisData.currencies">
+                  {{thisCurrency}}
+                </span>
+              </section>
+            </div>
+            <div class="6u 12u(mobile)">
+              <section>
+                <h3 class="icon fa-cog">Timezones</h3>
+
+                  <span ng-repeat="thisTime in thisData.timezones">
+                    {{thisTime}}
+                  </span>
+
+              </section>
+            </div>
+          </div>
+          <div class="row">
+            <div class="6u 12u(mobile)">
+              <section>
+                <h3 class="icon fa-globe">Area</h3></h3>
+                <p>
+                  {{thisData.area}}
+                </p>
+              </section>
+            </div>
+            <div class="6u 12u(mobile)">
+              <section>
+                <h3 class="icon fa-check">Region</h3>
+                <p>{{thisData.region}}&nbsp;({{thisData.subregion}})</p>
+              </section>
+            </div>
+          </div>
+        </div>
+        <!-- <ul class="actions actions-centered">
+          <li><a href="#" class="button style1 big">Get Started</a></li>
+          <li><a href="#" class="button style2 big">More Info</a></li>
+        </ul> -->
+
+      </section>
+
+
+    </div>
+  </div>
