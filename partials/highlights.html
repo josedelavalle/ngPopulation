@@ -1,37 +1,37 @@
 <!-- Highlights -->
   <div class="wrapper style3">
-    <div class="title"><h3 class="icon fa-arrows-alt"></h3></div>
+    <div class="title"><h3 class="icon fa-info"></h3></div>
     <div id="highlights" class="container">
       <!-- Features -->
       <section id="features" ng-repeat="thisData in $parent.dataDetails">
         <h2>{{thisData.name}}</h2>
         <div class="feature-list">
           <div class="row">
-            <div class="6u 12u(mobile)">
+            <div class="4u 12u(mobile)">
               <section>
-                <h3 class="icon fa-comment">Capital</h3>
+                <h3 class="icon fa-flag">Capital</h3>
                 <p>{{thisData.capital}}</p>
               </section>
             </div>
-            <div class="6u 12u(mobile)">
+            <div class="4u 12u(mobile)">
               <section>
-                <h3 class="icon fa-refresh">Population</h3>
-                <p>{{thisData.population}}</p>
+                <h3 class="icon fa-user">Population</h3>
+                <p>{{thisData.population}} people</p>
               </section>
             </div>
-          </div>
-          <div class="row">
-            <div class="6u 12u(mobile)">
+            <div class="4u 12u(mobile)">
               <section>
-                <h3 class="icon fa-picture-o">Currency</h3>
+                <h3 class="icon fa-dollar">Currency</h3>
                 <span ng-repeat="thisCurrency in thisData.currencies">
                   {{thisCurrency}}
                 </span>
               </section>
             </div>
-            <div class="6u 12u(mobile)">
+          </div>
+          <div class="row">
+            <div class="4u 12u(mobile)">
               <section>
-                <h3 class="icon fa-cog">Timezones</h3>
+                <h3 class="icon fa-clock-o">Timezones</h3>
 
                   <span ng-repeat="thisTime in thisData.timezones">
                     {{thisTime}}
@@ -39,19 +39,17 @@
 
               </section>
             </div>
-          </div>
-          <div class="row">
-            <div class="6u 12u(mobile)">
+            <div class="4u 12u(mobile)">
               <section>
-                <h3 class="icon fa-globe">Area</h3></h3>
+                <h3 class="icon fa-map">Area</h3></h3>
                 <p>
-                  {{thisData.area}}
+                  {{thisData.area}} km2
                 </p>
               </section>
             </div>
-            <div class="6u 12u(mobile)">
+            <div class="4u 12u(mobile)">
               <section>
-                <h3 class="icon fa-check">Region</h3>
+                <h3 class="icon fa-globe">Region</h3>
                 <p>{{thisData.region}}&nbsp;({{thisData.subregion}})</p>
               </section>
             </div>

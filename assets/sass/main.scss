@@ -677,13 +677,22 @@
 	#highlights {
 		.highlight {
 			text-align: center;
-
 			h3 {
 				color: #63c7d8;
 			}
 		}
 	}
 
+#gallery {
+	display: flex;
+	flex-wrap: wrap;
+	.actions {
+		text-align: center;
+	}
+	h3 {
+		color: #63c7d8;
+	}
+}
 /* Copyright */
 
 	#copyright {
@@ -1144,6 +1153,9 @@
 
 				hr {
 					margin: 6em 0 6em 0;
+				}
+				h3 {
+					text-align: center;
 				}
 			}
 

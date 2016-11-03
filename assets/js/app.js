@@ -44,7 +44,8 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
   $scope.allCountries = [];
   $scope.defaultCountry = "United States";
   $scope.allCountries.push($scope.defaultCountry);
-  $scope.pageTitle = "Population by Age and Gender";
+  $scope.pageTitle = "2016 Country Population by Age and Gender";
+	$scope.myLinks = ["http://slickwebstudio.com/ngGallery","http://slickwebstudio.com/ngNews","http://josedelavalle.com"];
   $scope.country = CountryService.get();
 	console.log($scope.country);
   var query = popService.query();
@@ -66,7 +67,7 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
   $scope.data = [], $scope.dataDetails = [];
   $scope.labels = [];
   $scope.series = [thisCountry + ' - Males', thisCountry + ' - Females'];
-  $scope.title = "2016 Country Population by Age and Gender";
+
     	// for (var key in $scope.users) {
 
 			var thisURL = "https://restcountries.eu/rest/v1/name/" + thisCountry;

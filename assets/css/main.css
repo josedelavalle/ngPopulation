@@ -49,6 +49,14 @@
   to {
     transform: translateY(0); } }
 
+.ng-enter {
+  animation: slideInRight 0.6s both ease-in-out;
+  z-index: 8888; }
+
+.ng-leave {
+  animation: slideOutLeft 0.3s both ease-in-out;
+  z-index: 8889; }
+
 /*
 	Escape Velocity by Pixelarity
 	pixelarity.com @pixelarity
@@ -1355,6 +1363,14 @@ ol.default {
   #highlights .highlight h3 {
     color: #63c7d8; }
 
+#gallery {
+  display: flex;
+  flex-wrap: wrap; }
+  #gallery .actions {
+    text-align: center; }
+  #gallery h3 {
+    color: #63c7d8; }
+
 /* Copyright */
 #copyright {
   text-align: center; }
@@ -1635,6 +1651,8 @@ ol.default {
     padding-bottom: 0; }
   #footer hr {
     margin: 6em 0 6em 0; }
+  #footer h3 {
+    text-align: center; }
   /* Copyright */
   #copyright ul {
     padding: 0.75em 2em;
