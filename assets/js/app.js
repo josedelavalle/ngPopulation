@@ -35,7 +35,8 @@ app.config(['$routeProvider', '$locationProvider', 'ChartJsProvider', function($
 }]);
 
 app.service('CountryService', function ($resource) {
-	    return $resource(encodeURI('http://api.population.io:80/1.0/countries'));///:user',{user: "@user"});
+	    //return $resource(encodeURI('http://api.population.io:80/1.0/countries'));///:user',{user: "@user"});
+			return $resource('assets/countries.json')
 });
 app.service('popService', function ($resource) {
 	    return $resource(encodeURI('http://api.population.io:80/1.0/population/2015/United States/'));///:user',{user: "@user"});
