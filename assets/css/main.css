@@ -1252,7 +1252,7 @@ ol.default {
       border: solid 10px #fff; }
 
 #header-wrapper {
-  background: url("../../images/earth-1149733_960_720.jpg") center center;
+  background: url("../../images/earth2.jpg") center center;
   opacity: 0.9;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -1329,15 +1329,17 @@ ol.default {
     background: #3d4249 url("images/overlay.png"); }
 
 /* Logo */
-#logo h1 {
-  font-weight: 900;
-  text-transform: uppercase;
-  color: #fff; }
-
-#logo p {
-  color: #eee;
-  color: rgba(255, 255, 255, 0.5);
-  text-transform: uppercase; }
+#logo {
+  margin: auto; }
+  #logo h1 {
+    background: rbga(0, 0, 0, 0.4);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #fff; }
+  #logo p {
+    color: #eee;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase; }
 
 /* Intro */
 #intro > .style2 {

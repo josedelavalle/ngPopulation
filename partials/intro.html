@@ -3,13 +3,13 @@
     <div class="title"><h3 class="icon fa-globe"></h3></div>
     <section id="intro" class="container">
       <!-- <p class="style1">Add a country to graph</p> -->
-      <input type="text" id="listCountries" ng-model="selected"
+      <input type="text" id="listCountries" placeholder="Country" ng-model="selected"
       uib-typeahead="thisCountry for thisCountry in country.countries | filter:$viewValue:emptyOrMatch"
       typeahead-focus>
 
       <p class="style3"></p>
       <ul class="actions">
-        <li><a href="#" class="button style3 big" ng-click="countrySelected()">Proceed</a></li>
+        <li><a href="#" class="button style3 big" ng-click="countrySelected()">Add</a></li>
       </ul>
 
       <div id="countriesShown">

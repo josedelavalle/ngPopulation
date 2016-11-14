@@ -21,29 +21,30 @@
             </div>
             <div class="4u 12u(mobile)">
               <section>
-                <h3 class="icon fa-dollar">Currency</h3>
-                <span ng-repeat="thisCurrency in thisData.currencies">
-                  {{thisCurrency}}
-                </span>
+                <h3 class="icon fa-map">Area</h3></h3>
+                <p>
+                  {{thisData.area}} km2
+                </p>
               </section>
             </div>
+
           </div>
           <div class="row">
             <div class="4u 12u(mobile)">
               <section>
                 <h3 class="icon fa-clock-o">Timezones</h3>
 
-                  <span ng-repeat="thisTime in thisData.timezones">
+                  <p ng-repeat="thisTime in thisData.timezones">
                     {{thisTime}}
-                  </span>
+                  </p>
 
               </section>
             </div>
             <div class="4u 12u(mobile)">
               <section>
-                <h3 class="icon fa-map">Area</h3></h3>
-                <p>
-                  {{thisData.area}} km2
+                <h3 class="icon fa-dollar">Currency</h3>
+                <p ng-repeat="thisCurrency in thisData.currencies">
+                  {{thisCurrency}}
                 </p>
               </section>
             </div>

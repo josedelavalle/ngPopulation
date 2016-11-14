@@ -540,7 +540,7 @@
 	}
 
 	#header-wrapper {
-		background: url('../../images/earth-1149733_960_720.jpg') center center;
+		background: url('../../images/earth2.jpg') center center;
 		opacity: 0.9;
 		background-repeat: no-repeat;
 		background-attachment: fixed;
@@ -643,7 +643,10 @@
 /* Logo */
 
 	#logo {
+		margin: auto;
+
 		h1 {
+			background: rbga(0,0,0,0.4);
 			font-weight: 900;
 			text-transform: uppercase;
 			color: #fff;
