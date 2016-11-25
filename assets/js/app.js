@@ -41,10 +41,17 @@ app.service('CountryService', function ($resource) {
 app.service('popService', function ($resource) {
 	    return $resource(encodeURI('http://api.population.io:80/1.0/population/2015/United States/'));///:user',{user: "@user"});
 });
-app.controller("appController", ['$scope', '$http', 'CountryService', 'popService', function($scope, $http, CountryService, popService) {
-  $scope.allCountries = [];
+app.factory('getPopulation', function ($http) {
+    return {
+        get: function (thisCountry) {
+            return $http.get('https://restcountries.eu/rest/v1/name/' + thisCountry);
+        }
+    };
+});
+app.controller("appController", ['$scope', '$http', 'CountryService', 'popService', 'getPopulation', function($scope, $http, CountryService, popService, getPopulation) {
+  $scope.allShownCountries = [];
   $scope.defaultCountry = "United States";
-  $scope.allCountries.push($scope.defaultCountry);
+  $scope.allShownCountries.push($scope.defaultCountry);
   $scope.pageTitle = "2016 Country Population by Age and Gender";
 	$scope.myLinks = ["http://slickwebstudio.com/ngGallery","http://slickwebstudio.com/ngNews","http://josedelavalle.com"];
   $scope.country = CountryService.get();
@@ -71,17 +78,15 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
 
     	// for (var key in $scope.users) {
 
-			var thisURL = "https://restcountries.eu/rest/v1/name/" + thisCountry;
-			var newDetailData = $http.get(thisURL)
-						.success(function(newDetailData) {
-							$scope.dataDetails.push(newDetailData[newDetailData.length - 1]);
-							console.log($scope.dataDetails[0]);
-						})
-						.error(function (error, status){
-	            $scope.data.error = { message: error, status: status};
-	            console.log("error = " + $scope.data.error.status);
-	          });
+      getPopulation.get(thisCountry).then(function (msg) {
 
+          $scope.dataDetails.push(msg.data);
+          console.log($scope.dataDetails); 
+
+      }), function() {
+        console.log("======ERROR=======");
+        console.log(msg);
+      };
 
   $scope.onClick = function (points, evt) {
     console.log(points, evt);
@@ -107,15 +112,21 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
   };
 
   $scope.countrySelected = function() {
-    var x = document.getElementById("listCountries");
+    
+    // var x = document.getElementById("listCountries");
 
   		// thisCountry = x.options[x.selectedIndex].value;
-		thisCountry = x.value;
-
+		thisCountry = this.selected;
+    this.selected = "";
+    console.log($scope.country.countries);
+    var index = $scope.country.countries.indexOf(thisCountry);
+    if (index >= 0) $scope.country.countries.splice(index, 1);
+    //console.log(this.selected);
 		var thisURL = "https://restcountries.eu/rest/v1/name/" + thisCountry;
 		var newDetailData = $http.get(thisURL)
 					.success(function(newDetailData) {
 						$scope.dataDetails.push(newDetailData[newDetailData.length - 1]);
+            
 					})
 					.error(function (error, status){
             $scope.data.error = { message: error, status: status};
@@ -129,8 +140,8 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
 		thisURL = encodeURI("http://api.population.io:80/1.0/population/" + thisYear + "/" + thisCountry);
 		var newData = $http.get(thisURL)
 	  			.success(function(newData) {
-            //$scope.allCountries.push(thisCountry + ' ' + thisYear);
-						$scope.allCountries.push(thisCountry);
+            //$scope.allShownCountries.push(thisCountry + ' ' + thisYear);
+						$scope.allShownCountries.push(thisCountry);
 						thisLength = newData.length;
             // console.log(thisLength);
 	  				for (i = 0; i < thisLength; i = i + 5) {
@@ -151,9 +162,10 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
             console.log($scope.data.error.status);
           });
   };
+
 	$scope.removeCountry = function() {
-  	var arrPos = $.inArray(this.thisCountry, $scope.allCountries);
-  	$scope.allCountries.splice(arrPos, 1 );
+  	var arrPos = $.inArray(this.thisCountry, $scope.allShownCountries);
+  	$scope.allShownCountries.splice(arrPos, 1 );
   	$scope.series.splice(arrPos*2, 2 );
   	$scope.data.splice(arrPos*2, 2);
 		$scope.dataDetails.splice(arrPos, 1 );
@@ -162,6 +174,7 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
 
 
 }]);
+
 
 
 app.directive('typeaheadFocus', function () {

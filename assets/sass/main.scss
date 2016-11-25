@@ -184,6 +184,7 @@
 		select,
 		textarea {
 			@include vendor('transition', 'all .25s ease-in-out');
+			color: black !important;
 			-webkit-appearance: none;
 			display: block;
 			border: 0;

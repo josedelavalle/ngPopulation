@@ -1,19 +1,23 @@
 <!-- Intro -->
   <div id="intro-wrapper" class="wrapper style1">
-    <div class="title"><h3 class="icon fa-globe"></h3></div>
+    <div class="title"><h3 class="icon fa-arrow-down"></h3></div>
     <section id="intro" class="container">
       <!-- <p class="style1">Add a country to graph</p> -->
-      <input type="text" id="listCountries" placeholder="Country" ng-model="selected"
+      <md-input-container class="md-block" flex-gt-sm>
+            <label>Country</label>
+            <input type="text" id="listCountries" ng-model="selected"
       uib-typeahead="thisCountry for thisCountry in country.countries | filter:$viewValue:emptyOrMatch"
-      typeahead-focus>
+      typeahead-focus typeahead-on-select="countrySelected()">
+          </md-input-container>
+      
 
-      <p class="style3"></p>
+      <!-- p class="style3"></p>
       <ul class="actions">
         <li><a href="#" class="button style3 big" ng-click="countrySelected()">Add</a></li>
-      </ul>
+      </ul> -->
 
       <div id="countriesShown">
-				<button type="button" ng-repeat="thisCountry in allCountries" class="btn btn-danger" ng-click="removeCountry()" ng-bind="thisCountry"></button>
+				<button type="button" ng-repeat="thisCountry in allShownCountries" class="btn btn-danger" ng-click="removeCountry()" ng-bind="thisCountry"></button>
 			</div>
     </section>
   </div>
