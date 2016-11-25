@@ -55,7 +55,7 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
   $scope.allShownCountries = [defaultCountry];
   
   $scope.pageTitle = "2016 Country Population by Age and Gender";
-	$scope.myLinks = ["http://slickwebstudio.com/ngGallery","http://slickwebstudio.com/ngNews","http://josedelavalle.com"];
+	$scope.myLinks = ["http://ngGallery.josedelavalle.com","http://ngNews.josedelavalle.com","http://josedelavalle.com"];
   $scope.country = CountryService.get();
 	// console.log($scope.country);
   var query = popService.query();
@@ -123,7 +123,7 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
 
   		// thisCountry = x.options[x.selectedIndex].value;
 		thisCountry = this.selected;
-    this.selected = ""
+    this.selected = "";
     // console.log($scope.country.countries);
     var index = $scope.country.countries.indexOf(thisCountry);
     if (index >= 0) $scope.country.countries.splice(index, 1);
@@ -166,6 +166,12 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
           });
   };
 
+  $scope.expandMe = function() {
+    $scope.expanded = true;
+  };
+  $scope.contractMe = function() {
+    $scope.expanded = false;
+  };
 	$scope.removeCountry = function() {
   	var arrPos = $.inArray(this.thisCountry, $scope.allShownCountries);
   	$scope.allShownCountries.splice(arrPos, 1 );

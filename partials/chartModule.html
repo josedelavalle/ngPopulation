@@ -1,9 +1,4 @@
-<div class="row">
-  <div ng-class="expanded ? '12u' : '6u 12u(mobile)'">
-  
-     <i class="icon fa-plus" ng-if="!expanded" ng-click="expandMe()"></i>
-     <i class="icon fa-minus" ng-if="expanded" ng-click="contractMe()"></i>
-     <md-content>
+<md-content>
       <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="Bar">
           <md-content class="md-padding">
@@ -49,54 +44,3 @@
         </md-tab>
       </md-tabs>
     </md-content>
-    <h4 class="centered">Age</h4>
-  </div>
-  <div ng-class="expanded ? '12u' : '6u 12u(mobile)'">
-    
-
-    <div class="row bordered">
-        <div class="3u">
-
-        </div>
-        <div class="3u centered">
-            <i class="icon fa-user"></i>
-        </div>
-        <div class="3u centered">
-            <i class="icon fa-globe"></i>
-        </div>
-        <div class="3u centered">
-            <i class="icon fa-flag"></i>
-        </div>
-    </div>
-
-    <div class="row bordered" ng-repeat="thisData in dataDetails">
-        
-        <div class="3u centered">
-            <div class="row">
-            <div class="6u">{{thisData.name}}</div>
-              <div class="6u">
-                <div class="males" style="background-color:{{colors[$index*2]}}">
-                  M
-                </div>
-                <div class="females" style="background-color:{{colors[$index*2+1]}}">
-                  F
-                </div>
-              </div>
-              
-            </div>
-        </div>
-        <div class="3u centered">
-            {{thisData.population.toLocaleString()}} people
-        </div>
-        <div class="3u centered">
-            {{thisData.area.toLocaleString()}} km2
-        </div>
-        <div class="3u centered">
-            <span>{{thisData.capital}}</span>
-        </div>
-      
-        
-  
-    </div>
-  </div>
-</div>
