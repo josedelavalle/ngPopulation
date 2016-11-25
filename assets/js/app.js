@@ -41,28 +41,30 @@ app.service('CountryService', function ($resource) {
 app.service('popService', function ($resource) {
 	    return $resource(encodeURI('http://api.population.io:80/1.0/population/2015/United States/'));///:user',{user: "@user"});
 });
-app.factory('getPopulation', function ($http) {
+app.factory('getCountryDetails', function ($http) {
     return {
         get: function (thisCountry) {
             return $http.get('https://restcountries.eu/rest/v1/name/' + thisCountry);
         }
     };
 });
-app.controller("appController", ['$scope', '$http', 'CountryService', 'popService', 'getPopulation', function($scope, $http, CountryService, popService, getPopulation) {
-  $scope.allShownCountries = [];
-  $scope.defaultCountry = "United States";
-  $scope.allShownCountries.push($scope.defaultCountry);
+app.controller("appController", ['$scope', '$http', 'CountryService', 'popService', 'getCountryDetails', function($scope, $http, CountryService, popService, getCountryDetails) {
+   var ctx = document.getElementById("mycanvas");
+   console.log(ctx);
+  defaultCountry = "United States";
+  $scope.allShownCountries = [defaultCountry];
+  
   $scope.pageTitle = "2016 Country Population by Age and Gender";
 	$scope.myLinks = ["http://slickwebstudio.com/ngGallery","http://slickwebstudio.com/ngNews","http://josedelavalle.com"];
   $scope.country = CountryService.get();
-	console.log($scope.country);
+	// console.log($scope.country);
   var query = popService.query();
   query.$promise.then(function(data) {
      $scope.rawdata = data;
-     console.log($scope.rawdata);
+     // console.log($scope.rawdata);
      var thisLength = $scope.rawdata.length, tmpArray = [], tmpArray2 = [];
 
-     for (i = 0; i < thisLength; i = i + 5) {
+     for (i = 0; i < thisLength; i = i + 10) {
      	 	tmpArray.push($scope.rawdata[i].males);
      	 	tmpArray2.push($scope.rawdata[i].females);
      	 	$scope.labels.push(i);
@@ -71,26 +73,30 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
     $scope.data.push(tmpArray2);
 	});
 
-  var thisCountry = $scope.defaultCountry;
+  var thisCountry = defaultCountry;
   $scope.data = [], $scope.dataDetails = [];
   $scope.labels = [];
   $scope.series = [thisCountry + ' - Males', thisCountry + ' - Females'];
 
     	// for (var key in $scope.users) {
 
-      getPopulation.get(thisCountry).then(function (msg) {
+  getCountryDetails.get(thisCountry).then(function (msg) {
 
-          $scope.dataDetails.push(msg.data);
-          console.log($scope.dataDetails); 
+      //The United States returns two arrays the first 
+      //being "territories" ie. Guam, Puerto Rico, etc.,
+      $scope.dataDetails.push(msg.data[1]);
 
-      }), function() {
-        console.log("======ERROR=======");
-        console.log(msg);
-      };
+  }), function() {
+    console.log("======ERROR=======");
+    console.log(msg);
+  };
+
+
 
   $scope.onClick = function (points, evt) {
-    console.log(points, evt);
+    // console.log(points, evt);
   };
+  $scope.colors = ["#ECD078", "#D95B43", "#C02942", "#542437", "#53777A", "#e0e4cc", "#f38630", "#fa6900", "#56003E", "#00487D"];
   $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
   $scope.options = {
     scales: {
@@ -117,23 +123,20 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
 
   		// thisCountry = x.options[x.selectedIndex].value;
 		thisCountry = this.selected;
-    this.selected = "";
-    console.log($scope.country.countries);
+    this.selected = ""
+    // console.log($scope.country.countries);
     var index = $scope.country.countries.indexOf(thisCountry);
     if (index >= 0) $scope.country.countries.splice(index, 1);
     //console.log(this.selected);
-		var thisURL = "https://restcountries.eu/rest/v1/name/" + thisCountry;
-		var newDetailData = $http.get(thisURL)
-					.success(function(newDetailData) {
-						$scope.dataDetails.push(newDetailData[newDetailData.length - 1]);
-            
-					})
-					.error(function (error, status){
-            $scope.data.error = { message: error, status: status};
-            console.log("error = " + $scope.data.error.status);
-						$scope.dataDetails.push([]);
-          });
-		console.log($scope.dataDetails);
+		getCountryDetails.get(thisCountry).then(function (msg) {
+
+      $scope.dataDetails.push(msg.data[0]);
+      console.log($scope.dataDetails);
+
+    }), function() {
+      console.log("======ERROR=======");
+      console.log(msg);
+    };
 
 		thisYear = "2016";
 		var tmpArray = [], tmpArray2 = [];
@@ -144,7 +147,7 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
 						$scope.allShownCountries.push(thisCountry);
 						thisLength = newData.length;
             // console.log(thisLength);
-	  				for (i = 0; i < thisLength; i = i + 5) {
+	  				for (i = 0; i < thisLength; i = i + 10) {
 			    	 	// console.log($scope.users[i].males);
 			    	 	tmpArray.push(newData[i].males);
 			    	 	tmpArray2.push(newData[i].females);
@@ -172,7 +175,7 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
   };
 
 
-
+  
 }]);
 
 

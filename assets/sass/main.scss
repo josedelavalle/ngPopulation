@@ -134,6 +134,33 @@
 		margin-bottom: 2em;
 	}
 
+	
+	.males {
+		height: 20px;
+		width:20px;
+		color: black;
+		opacity:0.5;
+		margin:0 10px;
+	}
+	.females {
+		height: 20px;
+		width:20px;
+		color: black;
+		opacity:0.5;
+		margin:0 10px;
+	}
+	.centered {
+		margin: auto;
+		text-align: center;
+	}
+	.bordered {
+		border-bottom: 1px solid #ddd;
+		padding-bottom:10px;
+	}
+	.flexed {
+		display: flex;
+		flex-wrap: wrap;
+	}
 /* Table */
 
 	table {
@@ -679,10 +706,16 @@
 /* Highlights */
 
 	#highlights {
+		display: flex;
 		.highlight {
+			display: flex;
+			flex-direction: column;
 			text-align: center;
 			h3 {
 				color: #63c7d8;
+			}
+			ul {
+				flex: 1 0 auto;
 			}
 		}
 	}
@@ -690,12 +723,21 @@
 #gallery {
 	display: flex;
 	flex-wrap: wrap;
+	.highlight {
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+		h3 {
+			color: #63c7d8;
+		}
+		.button {
+			flex: 1 0 auto;
+		}
+	}
 	.actions {
 		text-align: center;
 	}
-	h3 {
-		color: #63c7d8;
-	}
+	
 }
 /* Copyright */
 
