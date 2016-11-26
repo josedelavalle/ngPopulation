@@ -96,7 +96,7 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
   $scope.onClick = function (points, evt) {
     // console.log(points, evt);
   };
-  $scope.colors = ["#ECD078", "#D95B43", "#53777A", "#e0e4cc", "#00B853", "#C34D7C", "#f38630", "#fa6900", "#56003E", "#00487D"];
+  $scope.colors = ["#E8E2A0", "#EB937B", "#81BBC2", "#ED9FE5", "#9DEA98", "#A984E3", "#EEAA6F", "#8EECE5", "#AD76A0", "#94CCE5"];
   $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
   $scope.options = {
     scales: {
@@ -123,47 +123,52 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
 
   		// thisCountry = x.options[x.selectedIndex].value;
 		thisCountry = this.selected;
+    console.log($scope.allShownCountries);
     this.selected = "";
-    // console.log($scope.country.countries);
-    var index = $scope.country.countries.indexOf(thisCountry);
-    if (index >= 0) $scope.country.countries.splice(index, 1);
-    //console.log(this.selected);
-		getCountryDetails.get(thisCountry).then(function (msg) {
+    if ($scope.allShownCountries.indexOf(thisCountry) < 0) {
+      
+      // console.log($scope.country.countries);
+      // ====remove country from model----
+      //var index = $scope.country.countries.indexOf(thisCountry);
+      //if (index >= 0) $scope.country.countries.splice(index, 1);
+      //console.log(this.selected);
+  		getCountryDetails.get(thisCountry).then(function (msg) {
 
-      $scope.dataDetails.push(msg.data[0]);
-      // console.log($scope.dataDetails);
+        $scope.dataDetails.push(msg.data[0]);
+        // console.log($scope.dataDetails);
 
-    }), function() {
-      console.log("======ERROR=======");
-      console.log(msg);
-    };
+      }), function() {
+        console.log("======ERROR=======");
+        console.log(msg);
+      };
 
-		thisYear = "2016";
-		var tmpArray = [], tmpArray2 = [];
-		thisURL = encodeURI("http://api.population.io:80/1.0/population/" + thisYear + "/" + thisCountry);
-		var newData = $http.get(thisURL)
-	  			.success(function(newData) {
-            //$scope.allShownCountries.push(thisCountry + ' ' + thisYear);
-						$scope.allShownCountries.push(thisCountry);
-						thisLength = newData.length;
-            // console.log(thisLength);
-	  				for (i = 0; i < thisLength; i = i + 10) {
-			    	 	// console.log($scope.users[i].males);
-			    	 	tmpArray.push(newData[i].males);
-			    	 	tmpArray2.push(newData[i].females);
-			    	 	//console.log(newData[i].males);
+  		thisYear = "2016";
+  		var tmpArray = [], tmpArray2 = [];
+  		thisURL = encodeURI("http://api.population.io:80/1.0/population/" + thisYear + "/" + thisCountry);
+  		var newData = $http.get(thisURL)
+  	  			.success(function(newData) {
+              //$scope.allShownCountries.push(thisCountry + ' ' + thisYear);
+  						$scope.allShownCountries.push(thisCountry);
+  						thisLength = newData.length;
+              // console.log(thisLength);
+  	  				for (i = 0; i < thisLength; i = i + 10) {
+  			    	 	// console.log($scope.users[i].males);
+  			    	 	tmpArray.push(newData[i].males);
+  			    	 	tmpArray2.push(newData[i].females);
+  			    	 	//console.log(newData[i].males);
 
-    	    	}
-    	    	$scope.data.push(tmpArray);
-    	    	$scope.data.push(tmpArray2);
-    	    	$scope.series.push([thisCountry + ' ' + thisYear + ' - Males']);
-    	    	$scope.series.push([thisCountry + ' ' + thisYear + ' - Females']);
-	  				//$scope.data.push(newData);
-	  			})
-          .error(function (error, status){
-            $scope.data.error = { message: error, status: status};
-            console.log($scope.data.error.status);
-          });
+      	    	}
+      	    	$scope.data.push(tmpArray);
+      	    	$scope.data.push(tmpArray2);
+      	    	$scope.series.push([thisCountry + ' ' + thisYear + ' - Males']);
+      	    	$scope.series.push([thisCountry + ' ' + thisYear + ' - Females']);
+  	  				//$scope.data.push(newData);
+  	  			})
+            .error(function (error, status){
+              $scope.data.error = { message: error, status: status};
+              console.log($scope.data.error.status);
+            });
+    }
   };
 
 	$scope.removeCountry = function(thisCountry) {
@@ -172,6 +177,7 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
   	$scope.series.splice(arrPos*2, 2 );
   	$scope.data.splice(arrPos*2, 2);
 		$scope.dataDetails.splice(arrPos, 1 );
+
   };
 
 
