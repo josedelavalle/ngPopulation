@@ -49,6 +49,14 @@
   to {
     transform: translateY(0); } }
 
+#main .ng-enter {
+  animation: slideInRight 0.6s both ease-in-out;
+  z-index: 8888; }
+
+#main .ng-leave {
+  animation: slideOutLeft 0.3s both ease-in-out;
+  z-index: 8889; }
+
 /*
 	Escape Velocity by Pixelarity
 	pixelarity.com @pixelarity
@@ -945,6 +953,9 @@ p, ul, ol, dl, table, blockquote, form {
   margin: auto;
   text-align: center; }
 
+.no-padding {
+  padding-left: 0 !important; }
+
 .bordered {
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px; }
@@ -1221,6 +1232,8 @@ ol.default {
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale; }
+  .icon:focus {
+    outline: 0; }
   .icon > .label {
     display: none; }
 
@@ -1232,10 +1245,9 @@ ol.default {
     top: 0;
     left: 50%;
     text-align: center;
-    text-transform: uppercase;
     display: block;
-    font-weight: 700;
-    letter-spacing: 0.25em; }
+    font-weight: 400;
+    letter-spacing: 0.20em; }
     .wrapper .title:before {
       content: '';
       position: absolute;
@@ -1362,11 +1374,15 @@ ol.default {
     background: rbga(0, 0, 0, 0.4);
     font-weight: 900;
     text-transform: uppercase;
-    color: #fff; }
+    color: #fff;
+    text-shadow: 2px 2px black; }
   #logo p {
     color: #eee;
     color: rgba(255, 255, 255, 0.5);
     text-transform: uppercase; }
+  #logo img {
+    height: 30px;
+    width: 30px; }
 
 /* Intro */
 #intro > .style2 {
@@ -2004,6 +2020,8 @@ ol.default {
   /* Main */
   #main {
     padding: 1em 0 0 0; }
+    #main .row {
+      padding: 1em 1em !important; }
   /* Content */
   #content {
     padding: 0 0 2em 0; }

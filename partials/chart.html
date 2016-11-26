@@ -1,8 +1,8 @@
 <div class="row">
   <div ng-class="expanded ? '12u' : '6u 12u(mobile)'">
   
-     <i class="icon fa-plus" ng-if="!expanded" ng-click="expandMe()"></i>
-     <i class="icon fa-minus" ng-if="expanded" ng-click="contractMe()"></i>
+     <i ng-class="expanded ? 'icon fa-minus' : 'icon fa-plus'" ng-click="expanded=!expanded;"></i>
+     
      <md-content>
       <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="Bar">
@@ -55,32 +55,41 @@
     
 
     <div class="row bordered">
-        <div class="3u">
-
+        <div class="3u centered no-padding">
+            <i class="icon fa-globe"></i>
+            <br>Country
         </div>
         <div class="3u centered">
             <i class="icon fa-user"></i>
+            <br>Population
         </div>
         <div class="3u centered">
-            <i class="icon fa-globe"></i>
+            <i class="icon fa-map"></i>
+            <br>Area
         </div>
         <div class="3u centered">
             <i class="icon fa-flag"></i>
+            <br>Capital
         </div>
     </div>
 
     <div class="row bordered" ng-repeat="thisData in dataDetails">
         
-        <div class="3u centered">
+        <div class="3u centered no-padding">
             <div class="row">
-            <div class="6u">{{thisData.name}}</div>
-              <div class="6u">
-                <div class="males" style="background-color:{{colors[$index*2]}}">
-                  M
-                </div>
-                <div class="females" style="background-color:{{colors[$index*2+1]}}">
-                  F
-                </div>
+              
+                
+              
+              <div class="12u no-padding">
+                <i class="fa fa-close" ng-click="removeCountry(thisData.name)"></i>
+                {{thisData.name}}
+              
+                <p style="background-color:{{colors[$index*2]}}">
+                  Males
+                </p>
+                <p style="background-color:{{colors[$index*2+1]}}">
+                  Females
+                </p>
               </div>
               
             </div>

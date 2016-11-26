@@ -49,14 +49,14 @@ app.factory('getCountryDetails', function ($http) {
     };
 });
 app.controller("appController", ['$scope', '$http', 'CountryService', 'popService', 'getCountryDetails', function($scope, $http, CountryService, popService, getCountryDetails) {
-   var ctx = document.getElementById("mycanvas");
-   console.log(ctx);
+   
   defaultCountry = "United States";
   $scope.allShownCountries = [defaultCountry];
   
   $scope.pageTitle = "2016 Country Population by Age and Gender";
 	$scope.myLinks = ["http://ngGallery.josedelavalle.com","http://ngNews.josedelavalle.com","http://josedelavalle.com"];
   $scope.country = CountryService.get();
+  $scope.expanded = false;
 	// console.log($scope.country);
   var query = popService.query();
   query.$promise.then(function(data) {
@@ -96,7 +96,7 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
   $scope.onClick = function (points, evt) {
     // console.log(points, evt);
   };
-  $scope.colors = ["#ECD078", "#D95B43", "#C02942", "#542437", "#53777A", "#e0e4cc", "#f38630", "#fa6900", "#56003E", "#00487D"];
+  $scope.colors = ["#ECD078", "#D95B43", "#53777A", "#e0e4cc", "#00B853", "#C34D7C", "#f38630", "#fa6900", "#56003E", "#00487D"];
   $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
   $scope.options = {
     scales: {
@@ -131,7 +131,7 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
 		getCountryDetails.get(thisCountry).then(function (msg) {
 
       $scope.dataDetails.push(msg.data[0]);
-      console.log($scope.dataDetails);
+      // console.log($scope.dataDetails);
 
     }), function() {
       console.log("======ERROR=======");
@@ -166,14 +166,8 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'popServic
           });
   };
 
-  $scope.expandMe = function() {
-    $scope.expanded = true;
-  };
-  $scope.contractMe = function() {
-    $scope.expanded = false;
-  };
-	$scope.removeCountry = function() {
-  	var arrPos = $.inArray(this.thisCountry, $scope.allShownCountries);
+	$scope.removeCountry = function(thisCountry) {
+  	var arrPos = $.inArray(thisCountry, $scope.allShownCountries);
   	$scope.allShownCountries.splice(arrPos, 1 );
   	$scope.series.splice(arrPos*2, 2 );
   	$scope.data.splice(arrPos*2, 2);
