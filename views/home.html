@@ -2,12 +2,18 @@
 <!-- <div ng-include="'partials/intro.html'"></div> -->
 <!-- Main -->
 <div class="wrapper style2">
-  <div class="title"><md-input-container class="md-block" flex-gt-sm>
-            <label>Country</label>
-            <input type="text" id="listCountries" ng-model="selected"
-      uib-typeahead="thisCountry for thisCountry in country.countries | filter:$viewValue:emptyOrMatch"
-      typeahead-focus typeahead-on-select="countrySelected()">
-          </md-input-container></div>
+  <div class="title">
+
+  	<md-input-container class="md-block" flex-gt-sm ng-if="allShownCountries.length < 5" >
+        <label><i class="icon fa-arrow-down fa-2x"></i></label>
+        <input type="text" id="listCountries" ng-model="selected"
+     	 	uib-typeahead="thisCountry for thisCountry in country.countries | filter:$viewValue:emptyOrMatch" typeahead-focus typeahead-on-select="hideKeyboard();countrySelected();">
+    </md-input-container>
+    <div ng-if="allShownCountries.length >= 5">
+		<h4>Max Reached</h4>
+		<i class="icon fa-trash fa-2x" ng-click="removeAllCountries()"></i>
+    </div> 
+  </div>
   <div id="main" class="container">
 
     <h2>{{pageTitle}}</h2><hr>
