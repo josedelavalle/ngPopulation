@@ -5,9 +5,9 @@
   <div class="title">
 
   	<md-input-container class="md-block" flex-gt-sm ng-if="allShownCountries.length < 5" >
-        <label><i class="icon fa-arrow-down fa-2x"></i></label>
+        
         <input type="text" id="listCountries" placeholder="Enter Country Here" ng-model="selected"
-     	 	uib-typeahead="thisCountry for thisCountry in country.countries | filter:$viewValue:emptyOrMatch" typeahead-focus typeahead-on-select="hideKeyboard();countrySelected();">
+     	 	uib-typeahead="thisCountry for thisCountry in country.countries | filter:$viewValue:emptyOrMatch | orderBy: thisCountry" typeahead-focus typeahead-on-select="hideKeyboard();countrySelected();">
     </md-input-container>
     <div ng-if="allShownCountries.length >= 5">
 		<h4>Max Reached</h4>
