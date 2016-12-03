@@ -1,11 +1,12 @@
 <!-- Intro -->
   <div id="intro-wrapper" class="wrapper style1">
-    <div class="title"><h3 class="icon fa-arrow-down"></h3></div>
+    
     <section id="intro" class="container">
       <!-- <p class="style1">Add a country to graph</p> -->
       <md-input-container class="md-block" flex-gt-sm>
+            Enter Country
             <label>Country</label>
-            <input type="text" id="listCountries" ng-model="selected"
+            <input type="text" ng-placeholder="Enter Country" id="listCountries" ng-model="selected"
       uib-typeahead="thisCountry for thisCountry in country.countries | filter:$viewValue:emptyOrMatch"
       typeahead-focus typeahead-on-select="countrySelected()">
           </md-input-container>
