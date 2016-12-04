@@ -53,62 +53,81 @@ app.factory('getPopulation', function ($http) {
         }
     };
 });
-app.controller("appController", ['$scope', '$http', 'CountryService', 'getPopulation', 'getCountryDetails', function($scope, $http, CountryService, getPopulation, getCountryDetails) {
+app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'getCountryDetails', function($scope, CountryService, getPopulation, getCountryDetails) {
    
   defaultCountry = "United States";
+  var thisCountry = defaultCountry;
+  var thisYear = 2016;
   $scope.allShownCountries = [defaultCountry];
   
   $scope.pageTitle = "2016 Country Population by Age and Gender";
 	$scope.myLinks = ["http://ngGallery.josedelavalle.com","http://ngNews.josedelavalle.com","http://josedelavalle.com"];
   $scope.country = CountryService.get();
   $scope.expanded = false;
-	// console.log($scope.country);
 
-  getPopulation.get('2016', defaultCountry).then(function (msg) {
-      var tmpArray = [], tmpArray2 = [];
-      for (i = 0; i < msg.data.length; i = i + 10) {
-        tmpArray.push(msg.data[i].males);
-        tmpArray2.push(msg.data[i].females);
-        $scope.labels.push(i);
-      }
-      $scope.data.push(tmpArray);
-      $scope.data.push(tmpArray2);
-  });
-
-
- //  var query = popService.query();
- //  query.$promise.then(function(data) {
- //     $scope.rawdata = data;
- //     // console.log($scope.rawdata);
- //     var thisLength = $scope.rawdata.length, tmpArray = [], tmpArray2 = [];
-
- //     for (i = 0; i < thisLength; i = i + 10) {
- //     	 	tmpArray.push($scope.rawdata[i].males);
- //     	 	tmpArray2.push($scope.rawdata[i].females);
- //     	 	$scope.labels.push(i);
- //     	}
- //    $scope.data.push(tmpArray);
- //    $scope.data.push(tmpArray2);
-	// });
-
-  var thisCountry = defaultCountry;
   $scope.data = [], $scope.dataDetails = [];
   $scope.labels = [];
-  $scope.series = [thisCountry + ' - Males', thisCountry + ' - Females'];
+  $scope.series = [];
+	// console.log($scope.country);
+  $scope.getPop = function (thisCountry) {
+    getPopulation.get('2016', thisCountry).then(function (msg) {
+        var tmpArray = [], tmpArray2 = [];
+        $scope.allShownCountries.push(thisCountry);
+        console.log('asdf');
+        console.log(msg.data);
+        for (i = 0; i < msg.data.length; i = i + 10) {
 
-    	// for (var key in $scope.users) {
+          tmpArray.push(msg.data[i].males);
+          tmpArray2.push(msg.data[i].females);
+         
+        }
+        
+        $scope.data.push(tmpArray);
+        $scope.data.push(tmpArray2);
+        
+    });
+    console.log(thisCountry + ' ' + thisYear);
+    pushLabels(thisCountry, thisYear);
+  };
+  for (i = 0; i < 101; i = i + 10) {
+      $scope.labels.push(i);
 
-  getCountryDetails.get(thisCountry).then(function (msg) {
-
-      //The United States returns two arrays the first 
-      //being "territories" ie. Guam, Puerto Rico, etc.,
-      $scope.dataDetails.push(msg.data[1]);
-
-  }), function() {
-    console.log("======ERROR=======");
-    console.log(msg);
+  }
+  pushLabels = function(thisCountry, thisYear) {
+    $scope.series.push([thisCountry + ' ' + thisYear + ' - Males']);
+    $scope.series.push([thisCountry + ' ' + thisYear + ' - Females']);
   };
 
+  $scope.getPop(defaultCountry);
+
+  getDetails = function(thisCountry) {
+    getCountryDetails.get(thisCountry).then(function (msg) {
+      var found = false;
+      //The United States returns two arrays the first 
+      //being "territories" ie. Guam, Puerto Rico, etc.,
+     
+      console.log('length ' + msg.data.length);
+      if (msg.data.length > 1) {
+          for(i=0; i <= msg.data.length-1; i++) {
+            console.log('thiscountry' + thisCountry);
+            console.log('msgdata' + msg.data[i].name);
+            if(thisCountry == msg.data[i].name) {
+              $scope.dataDetails.push(msg.data[i]);
+              found = true;
+              console.log('found');
+            }
+          }
+          if (!found) $scope.dataDetails.push(msg.data[1]);
+      } else {
+        $scope.dataDetails.push(msg.data[0]);
+      } 
+    }), function() {
+      console.log("======ERROR=======");
+      console.log(msg);
+    }
+  };
+  
+  getDetails(thisCountry);
 
 
   $scope.onClick = function (points, evt) {
@@ -137,57 +156,18 @@ app.controller("appController", ['$scope', '$http', 'CountryService', 'getPopula
 
   $scope.countrySelected = function() {
     
-    // var x = document.getElementById("listCountries");
-
-  		// thisCountry = x.options[x.selectedIndex].value;
 		thisCountry = this.selected;
-    console.log($scope.allShownCountries);
+    $scope.getPop(thisCountry);
+  
     this.selected = "";
 
     //make sure we haven't added this before
     if ($scope.allShownCountries.indexOf(thisCountry) < 0) {
       
-      // console.log($scope.country.countries);
-      // ====remove country from model----
-      //var index = $scope.country.countries.indexOf(thisCountry);
-      //if (index >= 0) $scope.country.countries.splice(index, 1);
-      //console.log(this.selected);
-  		getCountryDetails.get(thisCountry).then(function (msg) {
+  
+  		getDetails(thisCountry);
 
-        $scope.dataDetails.push(msg.data[0]);
-        // console.log($scope.dataDetails);
-
-      }), function() {
-        console.log("======ERROR=======");
-        console.log(msg);
-      };
-
-  		thisYear = "2016";
-  		var tmpArray = [], tmpArray2 = [];
-  		thisURL = encodeURI("http://api.population.io:80/1.0/population/" + thisYear + "/" + thisCountry);
-  		var newData = $http.get(thisURL)
-  	  			.success(function(newData) {
-              //$scope.allShownCountries.push(thisCountry + ' ' + thisYear);
-  						$scope.allShownCountries.push(thisCountry);
-  						thisLength = newData.length;
-              // console.log(thisLength);
-  	  				for (i = 0; i < thisLength; i = i + 10) {
-  			    	 	// console.log($scope.users[i].males);
-  			    	 	tmpArray.push(newData[i].males);
-  			    	 	tmpArray2.push(newData[i].females);
-  			    	 	//console.log(newData[i].males);
-
-      	    	}
-      	    	$scope.data.push(tmpArray);
-      	    	$scope.data.push(tmpArray2);
-      	    	$scope.series.push([thisCountry + ' ' + thisYear + ' - Males']);
-      	    	$scope.series.push([thisCountry + ' ' + thisYear + ' - Females']);
-  	  				//$scope.data.push(newData);
-  	  			})
-            .error(function (error, status){
-              $scope.data.error = { message: error, status: status};
-              console.log($scope.data.error.status);
-            });
+  		
     }
   };
 
