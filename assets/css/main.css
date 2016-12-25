@@ -17,32 +17,30 @@
   100% {
     transform: translateY(100%) rotateZ(17deg); } }
 
-/* slide in from the bottom */
 @keyframes slideOutLeft {
   to {
     transform: translateX(-100%); } }
 
-/* rotate out newspaper */
+@keyframes slideOutRight {
+  to {
+    transform: translateX(100%); } }
+
 @keyframes rotateOutNewspaper {
   to {
     transform: translateZ(-3000px) rotateZ(360deg);
     opacity: 0; } }
 
-/* entering animations --------------------------------------- */
-/* scale up */
 @keyframes scaleUp {
   from {
     opacity: 0.3;
     -webkit-transform: scale(0.8); } }
 
-/* slide in from the right */
 @keyframes slideInRight {
   from {
     transform: translateX(100%); }
   to {
     transform: translateX(0); } }
 
-/* slide in from the bottom */
 @keyframes slideInUp {
   from {
     transform: translateY(100%); }
@@ -54,7 +52,7 @@
   z-index: 8888; }
 
 #main .ng-leave {
-  animation: slideOutLeft 0.3s both ease-in-out;
+  animation: slideOutRight 0.3s both ease-in-out;
   z-index: 8889; }
 
 /* Reset */
@@ -932,7 +930,7 @@ p, ul, ol, dl, table, blockquote, form {
 
 .gender {
   padding-top: 1em;
-  max-width: 50%; }
+  width: 50%; }
 
 .centered {
   margin: auto;

@@ -58,7 +58,8 @@ app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'g
   defaultCountry = "United States";
   var thisCountry = defaultCountry;
   var thisYear = 2016;
-  $scope.allShownCountries = [defaultCountry];
+  $scope.notFoundMessage = "Not Found";
+  $scope.allShownCountries = [];
   
   $scope.pageTitle = "2016 Country Population by Age and Gender";
 	$scope.myLinks = ["http://ngGallery.josedelavalle.com","http://ngNews.josedelavalle.com","http://josedelavalle.com"];
@@ -70,10 +71,11 @@ app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'g
   $scope.series = [];
 	// console.log($scope.country);
   $scope.getPop = function (thisCountry) {
+
     getPopulation.get('2016', thisCountry).then(function (msg) {
         var tmpArray = [], tmpArray2 = [];
         $scope.allShownCountries.push(thisCountry);
-        console.log('asdf');
+        console.log('all', $scope.allShownCountries);
         console.log(msg.data);
         for (i = 0; i < msg.data.length; i = i + 10) {
 
@@ -84,10 +86,10 @@ app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'g
         
         $scope.data.push(tmpArray);
         $scope.data.push(tmpArray2);
-        
+        pushLabels(thisCountry, thisYear);
     });
     console.log(thisCountry + ' ' + thisYear);
-    pushLabels(thisCountry, thisYear);
+    
   };
   for (i = 0; i < 101; i = i + 10) {
       $scope.labels.push(i);
@@ -105,7 +107,7 @@ app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'g
       var found = false;
       //The United States returns two arrays the first 
       //being "territories" ie. Guam, Puerto Rico, etc.,
-     
+      
       console.log('length ' + msg.data.length);
       if (msg.data.length > 1) {
           for(i=0; i <= msg.data.length-1; i++) {
@@ -117,14 +119,18 @@ app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'g
               console.log('found');
             }
           }
-          if (!found) $scope.dataDetails.push(msg.data[1]);
+          if (!found) {
+            $scope.dataDetails.push(msg.data[1]);
+          }
+
       } else {
         $scope.dataDetails.push(msg.data[0]);
       } 
-    }), function() {
+      console.log('datadetails', $scope.dataDetails);
+    }).catch (function() {
       console.log("======ERROR=======");
-      console.log(msg);
-    }
+      $scope.dataDetails.push({name: thisCountry, capital: "Not Found", area: "Not Found", population: "Not Found"})
+    });
   };
   
   getDetails(thisCountry);
@@ -157,23 +163,25 @@ app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'g
   $scope.countrySelected = function() {
     
 		thisCountry = this.selected;
-    $scope.getPop(thisCountry);
+    
   
     this.selected = "";
-
+    
     //make sure we haven't added this before
     if ($scope.allShownCountries.indexOf(thisCountry) < 0) {
       
-  
+      $scope.getPop(thisCountry);
   		getDetails(thisCountry);
 
   		
     }
+
   };
 
-	$scope.removeCountry = function(thisCountry) {
-  	var arrPos = $.inArray(thisCountry, $scope.allShownCountries);
+	$scope.removeCountry = function(arrPos) {
   	$scope.allShownCountries.splice(arrPos, 1 );
+    console.log('all', $scope.allShownCountries);
+
   	$scope.series.splice(arrPos*2, 2 );
   	$scope.data.splice(arrPos*2, 2);
 		$scope.dataDetails.splice(arrPos, 1 );
@@ -185,7 +193,7 @@ app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'g
     $scope.dataDetails = [];
     $scope.allShownCountries = [];
     $scope.series = [];
-  }
+  };
 
   $scope.hideKeyboard = function() {
      document.activeElement.blur();

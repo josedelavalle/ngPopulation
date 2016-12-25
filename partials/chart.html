@@ -81,7 +81,7 @@
                 
               
               <div class="12u no-padding">
-                <i ng-mouseover="hovered=true" ng-mouseleave="hovered=false" ng-class="hovered ? 'fa fa-times-circle-o' : 'fa fa-times-circle'" ng-click="removeCountry(thisData.name)"></i>
+                <i ng-mouseover="hovered=true" ng-mouseleave="hovered=false" ng-class="hovered ? 'fa fa-times-circle-o' : 'fa fa-times-circle'" ng-click="removeCountry($index)"></i>
                 {{thisData.name}}
               
                 
@@ -90,10 +90,12 @@
             </div>
         </div>
         <div class="3u centered">
-            {{thisData.population.toLocaleString()}} people
+            {{thisData.population.toLocaleString()}}
+            <span ng-if="thisData.population != notFoundMessage">people</span>
         </div>
         <div class="3u centered">
-            {{thisData.area.toLocaleString()}} km2
+            {{thisData.area.toLocaleString()}}
+            <span ng-if="thisData.area != notFoundMessage">km2</span>
         </div>
         <div class="3u$ centered">
             <span>{{thisData.capital}}</span>
