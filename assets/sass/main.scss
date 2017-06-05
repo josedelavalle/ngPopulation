@@ -129,7 +129,9 @@
 		margin-bottom: 2em;
 	}
 
-	
+	.infoText {
+		font-size: 1.3em;
+	}
 	.gender {
 		padding-top: 1em;
 		width:50%;
@@ -156,6 +158,26 @@
 		}
 	}
 	
+	.margin-top-20 {
+		margin-top: 20px !important;
+	}
+
+	#map {
+		margin-top: 30px;
+	}
+
+	#listCountries {
+		font-size: 2em !important;
+	
+	}
+
+	md-input-container label{
+	  font-size: 1.5em !important;
+	  font-weight: 900 !important;
+	  letter-spacing: 4px;
+	  color: black;
+	}
+
 /* Table */
 
 	table {

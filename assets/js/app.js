@@ -1,4 +1,4 @@
-var app = angular.module('graphApp', ['chart.js','ngRoute','ngMaterial','ngResource','ngAnimate', 'ngSanitize', 'ui.bootstrap']);
+var app = angular.module('graphApp', ['chart.js','ngRoute','ngMaterial','ngResource','ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ngMap']);
 
 app.config(['$routeProvider', '$locationProvider', 'ChartJsProvider', function($routeProvider, $locationProvider, ChartJsProvider){
 
@@ -46,14 +46,20 @@ app.factory('getCountryDetails', function ($http) {
         }
     };
 });
-app.factory('getPopulation', function ($http) {
+app.factory('appFactory', function ($http, $resource) {
     return {
-        get: function (thisYear, thisCountry) {
+        getCountries: function () {
+          return $resource('assets/countries.json');
+        },
+        getPopulation: function (thisYear, thisCountry) {
             return $http.get("http://api.population.io:80/1.0/population/" + thisYear + "/" + thisCountry);
+        },
+        getCountryDetails: function (thisCountry) {
+            return $http.get('https://restcountries.eu/rest/v1/name/' + thisCountry);
         }
     };
 });
-app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'getCountryDetails', function($scope, CountryService, getPopulation, getCountryDetails) {
+app.controller("appController", ['$scope', '$timeout', '$window', 'CountryService', 'appFactory', 'NgMap', function($scope, $timeout, $window, CountryService, appFactory, NgMap) {
    
   defaultCountry = "United States";
   var thisCountry = defaultCountry;
@@ -72,7 +78,7 @@ app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'g
 	// console.log($scope.country);
   $scope.getPop = function (thisCountry) {
 
-    getPopulation.get('2016', thisCountry).then(function (msg) {
+    appFactory.getPopulation('2016', thisCountry).then(function (msg) {
         var tmpArray = [], tmpArray2 = [];
         $scope.allShownCountries.push(thisCountry);
         console.log('all', $scope.allShownCountries);
@@ -88,7 +94,7 @@ app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'g
         $scope.data.push(tmpArray2);
         pushLabels(thisCountry, thisYear);
     });
-    console.log(thisCountry + ' ' + thisYear);
+    
     
   };
   for (i = 0; i < 101; i = i + 10) {
@@ -103,7 +109,7 @@ app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'g
   $scope.getPop(defaultCountry);
 
   getDetails = function(thisCountry) {
-    getCountryDetails.get(thisCountry).then(function (msg) {
+    appFactory.getCountryDetails(thisCountry).then(function (msg) {
       var found = false;
       //The United States returns two arrays the first 
       //being "territories" ie. Guam, Puerto Rico, etc.,
@@ -135,6 +141,20 @@ app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'g
   
   getDetails(thisCountry);
 
+  var triggerResize = function () {
+    var evt = $window.document.createEvent('UIEvents'); 
+    evt.initUIEvent('resize', true, false, $window, 0); 
+    $window.dispatchEvent(evt);
+  };
+
+  $scope.onMapLoaded = function () {
+    console.log('map loaded');
+    var self = this;
+    triggerResize();
+    NgMap.getMap($scope.dataDetails.length - 1).then(function(map) {
+      map.setOptions({draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true});
+    });
+  };
 
   $scope.onClick = function (points, evt) {
     // console.log(points, evt);
@@ -202,7 +222,7 @@ app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'g
       inputs[i].blur();
      }
     };
-    console.log('inner height = ' + window.innerHeight);
+  
 
   $scope.isMobile = function() {
     if(window.innerWidth <= 800 && window.innerHeight <= 600) {
@@ -212,7 +232,8 @@ app.controller("appController", ['$scope', 'CountryService', 'getPopulation', 'g
     }
   }; 
 
-  
+
+
 }]);
 
 

@@ -1,7 +1,7 @@
 <div class="row">
   <div class="no-padding" ng-class="expanded ? '12u' : '6u 12u(mobile)'">
   
-     <i ng-show="isMobile" ng-class="expanded ? 'icon fa-minus' : 'icon fa-plus'" ng-click="expanded=!expanded;"></i>
+     <i ng-show="isMobile" class="icon" ng-class="expanded ? 'fa-minus' : 'fa-plus'" ng-click="expanded=!expanded;"></i>
      
      <md-content>
       <md-tabs md-dynamic-height md-border-bottom>
@@ -48,7 +48,7 @@
           </md-content>
         </md-tab>
       </md-tabs>
-    </md-content>
+     </md-content>
     <h4 class="centered">Age</h4>
   </div>
   <div ng-class="expanded ? '12u' : '6u 12u(mobile)'">
@@ -75,47 +75,57 @@
 
     <div class="row bordered" ng-repeat="thisData in dataDetails">
         
-        <div class="3u centered no-padding">
-            <div class="row">
+      <div class="3u centered no-padding">
+          <div class="row">
+            
               
-                
-              
-              <div class="12u no-padding">
-                <i ng-mouseover="hovered=true" ng-mouseleave="hovered=false" ng-class="hovered ? 'fa fa-times-circle-o' : 'fa fa-times-circle'" ng-click="removeCountry($index)"></i>
-                {{thisData.name}}
-              
-                
-              </div>
+            
+            <div class="12u no-padding">
+              <i class="icon" ng-mouseover="hovered=true" ng-mouseleave="hovered=false" ng-class="hovered ? 'fa fa-times-circle-o' : 'fa fa-times-circle'" ng-click="removeCountry($index)"></i>
+              <span class="infoText">{{thisData.name}}</span>
+            
               
             </div>
-        </div>
-        <div class="3u centered">
-            {{thisData.population.toLocaleString()}}
-            <span ng-if="thisData.population != notFoundMessage">people</span>
-        </div>
-        <div class="3u centered">
-            {{thisData.area.toLocaleString()}}
-            <span ng-if="thisData.area != notFoundMessage">km2</span>
-        </div>
-        <div class="3u$ centered">
-            <span>{{thisData.capital}}</span>
-        </div>
+            
+          </div>
+      </div>
+      <div class="3u centered">
+          {{thisData.population.toLocaleString()}}
+          <span ng-if="thisData.population != notFoundMessage">people</span>
+      </div>
+      <div class="3u centered">
+          {{thisData.area.toLocaleString()}}
+          <span ng-if="thisData.area != notFoundMessage">km2</span>
+      </div>
+      <div class="3u$ centered">
+          <span>{{thisData.capital}}</span>
+      </div>
+    
       
-        
-          <div class="6u gender no-padding centered">
-            <p style="background-color:{{colors[$index*2]}}">
-                  Males
-                </p>
-                
-          </div>
-          <div class="6u$ gender no-padding centered">
-           
-                <p style="background-color:{{colors[$index*2+1]}}">
-                  Females
-                </p>
-          </div>
-        </div>
-  
+      <div class="6u gender no-padding centered">
+        <p style="background-color:{{colors[$index*2]}}">
+              Males
+            </p>
+            
+      </div>
+      <div class="6u$ gender no-padding centered">
+       
+            <p style="background-color:{{colors[$index*2+1]}}">
+              Females
+            </p>
+      </div>
+
+     
+    </div>
+    
+    
+  </div>
+</div>
+<div class="row">
+  <div class="no-padding" ng-class="dataDetails.length == 1 ? '6u' : '6u'" ng-repeat="item in dataDetails">
+    <div class="hidden">{{item.latlng[0]}} , {{item.latlng[1]}}</div>
+    <div map-lazy-load="https://maps.google.com/maps/api/js">
+      <ng-map center="[{{item.latlng[0]}},{{item.latlng[1]}}]" zoom="3" map-initialized="onMapLoaded()"></ng-map>
     </div>
   </div>
 </div>
