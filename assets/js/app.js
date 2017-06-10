@@ -196,6 +196,12 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'CountryServic
     }
   };
 
+  $scope.getZoom = function (area) {
+    var zoom = Math.floor(area / 3000000);
+    if (zoom == 0) zoom = 5; else if (zoom == 1) zoom = 4; else zoom = 3;
+    return zoom;
+  };
+
   $scope.countrySelected = function() {
     
 		thisCountry = this.selected;
