@@ -75,6 +75,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'CountryServic
   $scope.data = [], $scope.dataDetails = [];
   $scope.labels = [];
   $scope.series = [];
+  $scope.popTotals = [];
 	// console.log($scope.country);
   $scope.getPop = function (thisCountry) {
 
@@ -83,16 +84,31 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'CountryServic
         $scope.allShownCountries.push(thisCountry);
         console.log('all', $scope.allShownCountries);
         console.log(msg.data);
+        var totalMales = 0;
+        var totalFemales = 0;
         for (i = 0; i < msg.data.length; i = i + 10) {
 
           tmpArray.push(msg.data[i].males);
+          totalMales += msg.data[i].males;
           tmpArray2.push(msg.data[i].females);
-         
+          totalFemales += msg.data[i].females;
+          
         }
-        
+        totalMalesPct = totalMales / (totalMales + totalFemales) * 100;
+        totalFemalesPct = totalFemales / (totalMales + totalFemales) * 100;
+        if (totalMalesPct > totalFemalesPct) {
+            totalMalesPct = Math.ceil(totalMalesPct);
+            totalFemalesPct = Math.floor(totalFemalesPct);
+        } else {
+            totalMalesPct = Math.floor(totalMalesPct);
+            totalFemalesPct = Math.ceil(totalFemalesPct);
+        } 
+        $scope.popTotals.push({males: totalMalesPct, females: totalFemalesPct});
+
         $scope.data.push(tmpArray);
         $scope.data.push(tmpArray2);
         pushLabels(thisCountry, thisYear);
+        console.log('scope data', $scope.data);
     });
     
     
@@ -205,7 +221,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'CountryServic
   	$scope.series.splice(arrPos*2, 2 );
   	$scope.data.splice(arrPos*2, 2);
 		$scope.dataDetails.splice(arrPos, 1 );
-
+    $scope.popTotals.splice(arrPos, 1 );
   };
 
   $scope.removeAllCountries = function() {

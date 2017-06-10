@@ -76,7 +76,7 @@
 		@include vendor('transition', 'color .25s ease-in-out');
 		text-decoration: none;
 		color: #717479;
-
+		cursor: pointer;
 		&:hover {
 			text-decoration: none;
 		}
@@ -130,7 +130,8 @@
 	}
 
 	.infoText {
-		font-size: 1.3em;
+		font-size: 1em;
+		font-weight: 500;
 	}
 	.gender {
 		padding-top: 1em;
@@ -174,7 +175,7 @@
 	md-input-container label{
 	  font-size: 1.5em !important;
 	  font-weight: 900 !important;
-	  letter-spacing: 4px;
+	  //letter-spacing: 2px;
 	  color: black;
 	}
 
@@ -491,7 +492,7 @@
 
 	.icon {
 		text-decoration: none;
-
+		
 		&:before {
 			display: inline-block;
 			font-family: FontAwesome;

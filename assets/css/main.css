@@ -886,7 +886,8 @@ a {
   -ms-transition: color .25s ease-in-out;
   transition: color .25s ease-in-out;
   text-decoration: none;
-  color: #717479; }
+  color: #717479;
+  cursor: pointer; }
   a:hover {
     text-decoration: none; }
 
@@ -929,7 +930,8 @@ p, ul, ol, dl, table, blockquote, form {
   margin-bottom: 2em; }
 
 .infoText {
-  font-size: 1.3em; }
+  font-size: 1em;
+  font-weight: 500; }
 
 .gender {
   padding-top: 1em;
@@ -965,7 +967,6 @@ p, ul, ol, dl, table, blockquote, form {
 md-input-container label {
   font-size: 1.5em !important;
   font-weight: 900 !important;
-  letter-spacing: 4px;
   color: black; }
 
 /* Table */
