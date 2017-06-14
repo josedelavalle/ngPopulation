@@ -77,6 +77,11 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'CountryServic
   $scope.series = [];
   $scope.popTotals = [];
 	// console.log($scope.country);
+  $scope.ageInterval = 10;
+  $scope.changeInterval = function() {
+    console.log('change interval', $scope.ageInterval)
+    $scope.getPop();
+  };
   $scope.getPop = function (thisCountry) {
 
     appFactory.getPopulation('2016', thisCountry).then(function (msg) {
@@ -86,7 +91,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'CountryServic
         console.log(msg.data);
         var totalMales = 0;
         var totalFemales = 0;
-        for (i = 0; i < msg.data.length; i = i + 10) {
+        for (i = 0; i < msg.data.length; i = i + $scope.ageInterval) {
 
           tmpArray.push(msg.data[i].males);
           totalMales += msg.data[i].males;
@@ -113,7 +118,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'CountryServic
     
     
   };
-  for (i = 0; i < 101; i = i + 10) {
+  for (i = 0; i < 101; i = i + $scope.ageInterval) {
       $scope.labels.push(i);
 
   }

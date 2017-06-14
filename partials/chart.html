@@ -131,7 +131,7 @@
       <div>{{getZoom(item.area)}}</div>
     </div>
 
-    <div map-lazy-load="https://maps.google.com/maps/api/js">
+    <div map-lazy-load="https://maps.google.com/maps/api/js?key=AIzaSyBPsDaLY2SWLxNqHNbZzjkMBgGVisLqFx8">
       <ng-map center="{{item.name}}" zoom="{{getZoom(item.area)}}" map-initialized="onMapLoaded()" zoom-to-include-markers="true"></ng-map>
     </div>
   </div>
