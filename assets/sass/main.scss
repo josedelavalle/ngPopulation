@@ -2,6 +2,7 @@
 @import 'libs/functions';
 @import 'libs/mixins';
 @import 'libs/animations';
+@import 'libs/spacing';
 
 @charset "UTF-8";
 @import url('http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,700,900');
@@ -158,7 +159,9 @@
 			color:pink;
 		}
 	}
-	
+	.full-width {
+		width: 100%;
+	}
 	.margin-top-20 {
 		margin-top: 20px !important;
 	}

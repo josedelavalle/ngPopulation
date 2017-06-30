@@ -6,7 +6,7 @@ var es = require('event-stream');
 
 
 gulp.task('sass', function() {
-	return gulp.src('assets/sass/*.scss')
+	return gulp.src('assets/sass/**/*.scss')
 		.pipe(sass())
 		.pipe(gulp.dest('assets/css'))
 });
