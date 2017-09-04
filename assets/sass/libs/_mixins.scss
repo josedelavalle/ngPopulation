@@ -21,6 +21,27 @@
 
 }
 
+@mixin responsive($class) {
+  @if $class == xs {
+    @media (max-width: 767px) { @content; }
+  }
+ 
+  @else if $class == sm {
+    @media (min-width: 768px) { @content; }
+  }
+ 
+  @else if $class == md {
+    @media (min-width: 992px) { @content; }
+  }
+ 
+  @else if $class == lg {
+    @media (min-width: 1200px) { @content; }
+  }
+ 
+  @else {
+    @warn "Breakpoint mixin supports: xs, sm, md, lg";
+  }
+}
 /// Applies padding to an element, taking the current element-margin value into account.
 /// @param {mixed} $tb Top/bottom padding.
 /// @param {mixed} $lr Left/right padding.
