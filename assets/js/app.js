@@ -8,14 +8,6 @@ app.config(['$routeProvider', '$locationProvider', 'ChartJsProvider', function($
    .when('/', {
     templateUrl: 'views/home.html',
 		controller: 'appController'
-    // resolve: {
-    //   // I will cause a 1 second delay
-    //   delay: function($q, $timeout) {
-    //     var delay = $q.defer();
-    //     $timeout(delay.resolve, 1000);
-    //     return delay.promise;
-    //   }
-    // }
   })
   .when('/1', {
     templateUrl: 'views/left-sidebar.html',
@@ -39,37 +31,35 @@ app.service('CountryService', function ($resource) {
 			return $resource('assets/countries.json')
 });
 
-app.factory('getCountryDetails', function ($http) {
-    return {
-        get: function (thisCountry) {
-            return $http.get('https://restcountries.eu/rest/v1/name/' + thisCountry);
-        }
-    };
-});
 app.factory('appFactory', function ($http, $resource) {
     return {
         getCountries: function () {
-          return $resource('assets/countries.json');
+          return $http.get('http://api.population.io:80/1.0/countries');
         },
         getPopulation: function (thisYear, thisCountry) {
             return $http.get("http://api.population.io:80/1.0/population/" + thisYear + "/" + thisCountry);
         },
         getCountryDetails: function (thisCountry) {
             return $http.get('https://restcountries.eu/rest/v1/name/' + thisCountry);
-        }
+        },
     };
 });
-app.controller("appController", ['$scope', '$timeout', '$window', 'CountryService', 'appFactory', 'NgMap', function($scope, $timeout, $window, CountryService, appFactory, NgMap) {
+app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 'NgMap', function($scope, $timeout, $window, appFactory, NgMap) {
    
   defaultCountry = "United States";
   var thisCountry = defaultCountry;
-  var thisYear = 2016;
+  var thisYear = 2017;
   $scope.notFoundMessage = "Not Found";
   $scope.allShownCountries = [];
   
-  $scope.pageTitle = "2016 Country Population by Age and Gender";
+  $scope.pageTitle = thisYear + " Country Population by Age and Gender";
 	$scope.myLinks = ["http://ngGallery.josedelavalle.com","http://ngNews.josedelavalle.com","http://josedelavalle.com"];
-  $scope.country = CountryService.get();
+  appFactory.getCountries().then(function(res) {
+
+    $scope.countries = res.data.countries;
+    console.log('----got countries', $scope.countries)
+  });
+  
   $scope.expanded = false;
 
   $scope.data = [], $scope.dataDetails = [];
@@ -114,6 +104,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'CountryServic
         $scope.data.push(tmpArray2);
         pushLabels(thisCountry, thisYear);
         console.log('scope data', $scope.data);
+
     });
     
     
@@ -168,12 +159,16 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'CountryServic
     $window.dispatchEvent(evt);
   };
 
-  $scope.onMapLoaded = function () {
+
+
+  $scope.onMapLoaded = function (latlng) {
     console.log('map loaded');
     var self = this;
     triggerResize();
     NgMap.getMap($scope.dataDetails.length - 1).then(function(map) {
-      map.setOptions({draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true});
+      map.setOptions({draggable: false, zoomControl: true, scrollwheel: false, disableDoubleClickZoom: true});
+      map.setCenter({lat: latlng[0], lng: latlng[1]});
+      
     });
   };
 
@@ -203,7 +198,8 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'CountryServic
 
   $scope.getZoom = function (area) {
     var zoom = Math.floor(area / 3000000);
-    if (zoom == 0) zoom = 5; else if (zoom == 1) zoom = 4; else zoom = 3;
+    //console.log('zoom', zoom);
+    if (zoom == 0) if (area < 1000) zoom = 10; else zoom = 5; else if (zoom == 1) zoom = 4; else zoom = 3;
     return zoom;
   };
 
@@ -222,7 +218,8 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'CountryServic
 
   		
     }
-
+    $('#chart-section').goTo();
+    $scope.hideKeyboard();
   };
 
 	$scope.removeCountry = function(arrPos) {
@@ -242,12 +239,30 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'CountryServic
     $scope.series = [];
   };
 
+
+  $scope.getCountries = function(searchString) {
+    console.log(searchString);
+    if (searchString != ' ') {
+      var tempArr = [];
+      for (x = 0; x < $scope.countries.length; x++) {
+        if ($scope.countries[x].toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
+          tempArr.push($scope.countries[x]);  
+        }
+      }
+      return tempArr;
+    } else {
+      return $scope.countries;
+    }
+    
+  }
   $scope.hideKeyboard = function() {
      document.activeElement.blur();
      var inputs = document.querySelectorAll('input');
      for(var i=0; i < inputs.length; i++) {
+      console.log(inputs[i]);
       inputs[i].blur();
      }
+
     };
   
 

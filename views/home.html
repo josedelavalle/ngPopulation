@@ -7,7 +7,7 @@
   	<md-input-container class="md-block" flex-gt-sm ng-if="allShownCountries.length < 5" >
         
         <input type="text" class="margin-top-20" id="listCountries" placeholder="Country" ng-model="selected"
-     	 	uib-typeahead="thisCountry for thisCountry in country.countries | filter:$viewValue:emptyOrMatch | orderBy: thisCountry" typeahead-focus typeahead-on-select="hideKeyboard();countrySelected();">
+     	 	uib-typeahead="thisCountry for thisCountry in getCountries($viewValue) | orderBy: thisCountry" typeahead-focus typeahead-on-select="countrySelected();" typeahead-focus-on-select="false">
         
     </md-input-container>
     <div ng-if="allShownCountries.length >= 5">

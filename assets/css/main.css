@@ -47,14 +47,6 @@
   to {
     transform: translateY(0); } }
 
-.ng-enter :not(.country-typeahead) {
-  animation: slideInRight 0.6s both ease-in-out;
-  z-index: 8888; }
-
-.ng-leave :not(.country-typeahead) {
-  animation: slideOutRight 0.3s both ease-in-out;
-  z-index: 8889; }
-
 /*------------------------------*/
 /*----- Margins & Paddings -----*/
 /*------------------------------*/
@@ -1233,20 +1225,36 @@ body {
 @-ms-viewport {
   width: device-width; }
 
+::-webkit-input-placeholder {
+  text-align: center; }
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  text-align: center; }
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  text-align: center; }
+
+:-ms-input-placeholder {
+  text-align: center; }
+
 body, input, textarea, select {
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
   color: #919499; }
 
-body.is-loading * {
-  -moz-transition: none !important;
-  -webkit-transition: none !important;
-  -ms-transition: none !important;
-  transition: none !important;
-  -moz-animation: none !important;
-  -webkit-animation: none !important;
-  -ms-animation: none !important;
-  animation: none !important; }
+body {
+  -webkit-overflow-scrolling: touch; }
+  body.is-loading * {
+    -moz-transition: none !important;
+    -webkit-transition: none !important;
+    -ms-transition: none !important;
+    transition: none !important;
+    -moz-animation: none !important;
+    -webkit-animation: none !important;
+    -ms-animation: none !important;
+    animation: none !important; }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
@@ -1349,6 +1357,7 @@ md-input-container label {
   font-size: 1.5em !important;
   font-weight: 900 !important;
   letter-spacing: 0em;
+  text-align: center;
   color: black; }
 
 /* Table */
@@ -2158,6 +2167,8 @@ ol.default {
     letter-spacing: 0; }
   #listCountries {
     font-size: 16px; }
+  #header-wrapper {
+    background-attachment: scroll; }
   h2, h3, h4, h5, h6 {
     font-size: 1.2em;
     letter-spacing: 0.05em;
@@ -2259,7 +2270,8 @@ ol.default {
     #titleBar .title {
       display: none; }
     #titleBar .toggle {
-      position: absolute;
+      position: fixed;
+      display: none;
       top: 0;
       left: 0;
       width: 60px;
@@ -2312,7 +2324,10 @@ ol.default {
     width: 275px;
     z-index: 10002;
     background: #242730 url("images/overlay.png");
-    box-shadow: inset -3px 0px 4px 0px rgba(0, 0, 0, 0.1); }
+    box-shadow: inset -3px 0px 4px 0px rgba(0, 0, 0, 0.1);
+    color: white; }
+    #navPanel h2 {
+      text-align: center; }
     #navPanel .link {
       display: block;
       color: rgba(255, 255, 255, 0.5);

@@ -21,7 +21,13 @@
 		});
 
 	$(function() {
-
+		$.fn.goTo = function() {
+	        $('html, body').animate({
+	            scrollTop: $(this).offset().top + 'px'
+	        }, 'slow');
+	        $(this).focus();
+	        return this; // for chaining...
+	    };
 		var	$window = $(window),
 			$body = $('body');
 
@@ -70,7 +76,9 @@
 				$(
 					'<div id="navPanel">' +
 						'<nav>' +
-							$('#nav').navList() +
+							'<h2><a href="http://josedelavalle.com">Check out more</a></h2>' +
+							'' +
+							'' +
 						'</nav>' +
 					'</div>'
 				)
