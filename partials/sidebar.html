@@ -1,0 +1,11 @@
+<div id="sidebar">{{$scope.dataDetails}}
+	<section class="box" ng-repeat="thisData in dataDetails">
+		<header>
+			<h2>{{thisData.name}}</h2>
+		</header>
+		<p>
+			{{thisData.name}} is a country located in {{thisData.subregion}} with a land mass of {{thisData.area}}.  Its capital city is {{thisData.capital}} and it has a total population of {{thisData.population}}.
+		</p>
+		<a href="#" class="btn btn-danger" ng-click="removeCountry($index)">Remove</a>
+	</section>
+</div>

@@ -161,7 +161,7 @@
 		text-align: center;
 	}
 	.no-padding {
-		padding-left: 0 !important;
+		padding: 0 !important;
 	}
 	.bordered {
 		border-bottom: 1px solid #ddd;
@@ -610,11 +610,11 @@
 	}
 
 	#header-wrapper {
-		background: url('../../images/earth2.jpg') center center;
-		opacity: 0.9;
+		background: url('../../images/earth2.jpg');
+		opacity: 1;
 		background-repeat: no-repeat;
 		background-attachment: fixed;
-
+		background-position: center center;
 		background-size: cover;
 		&:before {
 			content: '';
@@ -1072,35 +1072,42 @@
 		/* Nav */
 
 			#nav {
-				position: absolute;
+				position: fixed;
 				display: block;
-				top: 2.5em;
+				top: 5px;
 				left: 0;
 				width: 100%;
 				text-align: center;
-
+				
 				> ul {
+
 					display: inline-block;
 					border-radius: 0.35em;
 					box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.25);
 					padding: 0 1.5em 0 1.5em;
-					background: #333;
+					background: rgba(0,0,0,0.75);
+					//background: #EB937B;
+					color: white;
 					> li {
 						display: inline-block;
 						text-align: center;
 						padding: 0 1.5em 0 1.5em;
-
+						transition: all 0.5s ease-in-out;
+						&:hover {
+							background-color: rgba(40,40,40,0.7);
+						}
 						> ul {
 							display: none;
 						}
 
 						> a, > span {
 							display: block;
-							color: #eee;
-							color: rgba(255, 255, 255, 0.75);
+							//color: #eee;
+							color: rgba(255, 255, 255, 1);
 							text-transform: uppercase;
 							text-decoration: none;
-							font-size: 0.7em;
+							font-size: 0.8em;
+							font-weight: 600;
 							letter-spacing: 0.25em;
 							height: 5em;
 							line-height: 5em;

@@ -138,7 +138,7 @@
   padding: 0 !important; }
 
 .padding-5 {
-  padding: 5px; }
+  padding: 5px !important; }
 
 .padding-10 {
   padding: 10px; }
@@ -1328,7 +1328,7 @@ p, ul, ol, dl, table, blockquote, form {
   text-align: center; }
 
 .no-padding {
-  padding-left: 0 !important; }
+  padding: 0 !important; }
 
 .bordered {
   border-bottom: 1px solid #ddd;
@@ -1687,10 +1687,11 @@ ol.default {
       border: solid 10px #fff; }
 
 #header-wrapper {
-  background: url("../../images/earth2.jpg") center center;
-  opacity: 0.9;
+  background: url("../../images/earth2.jpg");
+  opacity: 1;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  background-position: center center;
   background-size: cover; }
   #header-wrapper:before {
     content: '';
@@ -1985,9 +1986,9 @@ ol.default {
     font-size: 0.9em; }
   /* Nav */
   #nav {
-    position: absolute;
+    position: fixed;
     display: block;
-    top: 2.5em;
+    top: 5px;
     left: 0;
     width: 100%;
     text-align: center; }
@@ -1996,20 +1997,24 @@ ol.default {
       border-radius: 0.35em;
       box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.25);
       padding: 0 1.5em 0 1.5em;
-      background: #333; }
+      background: rgba(0, 0, 0, 0.75);
+      color: white; }
       #nav > ul > li {
         display: inline-block;
         text-align: center;
-        padding: 0 1.5em 0 1.5em; }
+        padding: 0 1.5em 0 1.5em;
+        transition: all 0.5s ease-in-out; }
+        #nav > ul > li:hover {
+          background-color: rgba(40, 40, 40, 0.7); }
         #nav > ul > li > ul {
           display: none; }
         #nav > ul > li > a, #nav > ul > li > span {
           display: block;
-          color: #eee;
-          color: rgba(255, 255, 255, 0.75);
+          color: white;
           text-transform: uppercase;
           text-decoration: none;
-          font-size: 0.7em;
+          font-size: 0.8em;
+          font-weight: 600;
           letter-spacing: 0.25em;
           height: 5em;
           line-height: 5em;

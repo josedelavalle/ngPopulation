@@ -2,29 +2,22 @@
 <!-- <div ng-include="'partials/intro.html'"></div> -->
 <!-- Main -->
 <div class="wrapper style2">
-  <div class="title">
-
-  	<md-input-container class="md-block" flex-gt-sm ng-if="allShownCountries.length < 5" >
-        
-        <input type="text" class="margin-top-20" id="listCountries" placeholder="Country" ng-model="selected"
-     	 	uib-typeahead="thisCountry for thisCountry in getCountries($viewValue) | orderBy: thisCountry" typeahead-focus typeahead-on-select="countrySelected();" typeahead-focus-on-select="false">
-        
-    </md-input-container>
-    <div ng-if="allShownCountries.length >= 5">
-		<h4>Max Reached</h4>
-		<i class="icon fa-trash fa-2x" ng-click="removeAllCountries()"></i>
-    </div> 
-  </div>
+  <div ng-include="'partials/search.html'"></div>
   <div id="main" class="container">
     
       
     
     <h2>{{pageTitle}}</h2><hr>
-
-    
-    <div ng-include="'partials/chart.html'"></div>
- 
+    <div class="row">
+      <div class="6u">
+        <div ng-include="'partials/chart.html'"></div>
+      </div>
+      <div class="6u">
+        <div ng-include="'partials/details.html'"></div>
+      </div>
+    </div>
   </div>
 </div>
 <!-- <div ng-include="'partials/highlights.html'"></div> -->
+<div ng-include="'partials/map.html'"></div>
 <div ng-include="'partials/gallery.html'"></div>

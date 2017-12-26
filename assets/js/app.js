@@ -56,7 +56,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
 	$scope.myLinks = ["http://ngGallery.josedelavalle.com","http://ngNews.josedelavalle.com","http://josedelavalle.com"];
   appFactory.getCountries().then(function(res) {
 
-    $scope.countries = res.data.countries;
+    $scope.countries = res.data.countries.filter(x => x.toUpperCase() != x);
     console.log('----got countries', $scope.countries)
   });
   
@@ -245,7 +245,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
     if (searchString != ' ') {
       var tempArr = [];
       for (x = 0; x < $scope.countries.length; x++) {
-        if ($scope.countries[x].toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
+        if ($scope.countries[x].toLowerCase().indexOf(searchString.toLowerCase()) >= 0 && $scope.countries[x].toUpperCase() != searchString) {
           tempArr.push($scope.countries[x]);  
         }
       }

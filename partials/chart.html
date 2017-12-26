@@ -1,8 +1,4 @@
-<div class="row">
-  <div class="no-padding" id="chart-section" ng-class="expanded ? '12u' : '6u 12u(mobile)'">
-  
-     <i ng-show="isMobile" class="icon hidden-xs" ng-class="expanded ? 'fa-minus' : 'fa-plus'" ng-click="expanded=!expanded;"></i>
-     
+
      <md-content >
       <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="Bar">
@@ -49,92 +45,5 @@
         </md-tab>
       </md-tabs>
      </md-content>
-    <h4 class="centered">Age</h4>
-  </div>
-  <div ng-class="expanded ? '12u' : '6u 12u(mobile)'">
-    
-
-    <div class="row bordered">
-        <div class="col-xs-4 col-sm-3 centered no-padding">
-            <i class="icon fa-globe"></i>
-            <br>Country
-        </div>
-        <div class="col-xs-4 col-sm-3 centered">
-            <i class="icon fa-user"></i>
-            <br>Population
-        </div>
-        <div class="col-xs-4 col-sm-3 centered">
-            <i class="icon fa-map"></i>
-            <br>Area
-        </div>
-        <div class="hidden-xs col-sm-3 centered">
-            <i class="icon fa-flag"></i>
-            <br>Capital
-        </div>
-    </div>
-
-    <div class="row bordered" ng-repeat="thisData in dataDetails">
-        
-      <div class="col-xs-4 col-sm-3 centered no-padding">
-            
-            <div class="12u no-padding">
-              <i class="icon pull-left" ng-mouseover="hovered=true" ng-mouseleave="hovered=false" ng-class="hovered ? 'fa fa-times-circle-o' : 'fa fa-times-circle'" ng-click="removeCountry($index)"></i>
-              <span class="infoText">{{thisData.name}}</span>
-            
-              
-            </div>
-            
-          
-      </div>
-      <div class="col-xs-4 col-sm-3 centered">
-          {{thisData.population.toLocaleString()}}
-      </div>
-      <div class="col-xs-4 col-sm-3 centered">
-          {{thisData.area.toLocaleString()}}
-          <span ng-if="thisData.area != notFoundMessage">km2</span>
-      </div>
-      <div class="hidden-xs col-sm-3 centered">
-          <span>{{thisData.capital}}</span>
-      </div>
-    
-      <div class="col-xs-12 no-padding">
-        <div class="col-xs-6 padding-0">
-          <div class="gender padding-0 margin-0 centered full-width">
-            <p class="padding-5" style="background-color:{{colors[$index*2]}}">
-                  Males ({{popTotals[$index].males}}%)
-                </p>
-                
-          </div>
-        </div>
-        <div class="col-xs-6 padding-0">
-          <div class="gender padding-0 margin-0 centered full-width">
-           
-                <p class="padding-5" style="background-color:{{colors[$index*2+1]}}">
-                  Females ({{popTotals[$index].females}}%)
-                </p>
-          </div>
-        </div>
-      </div>
-     
-    </div>
-    
-    
-  </div>
-</div>
-<div class="row">
-  <div class="no-padding" ng-class="dataDetails.length == 1 ? '12u' : '12u'" ng-repeat="item in dataDetails">
-
-    <div class="hidden">
-      <div>{{item.latlng[0]}} , {{item.latlng[1]}}</div>
-      <div>{{item.name}}</div>
-      <div>{{popTotals[$index]}}</div>
-      <div>{{getZoom(item.area)}}</div>
-    </div>
-
-    <div map-lazy-load="https://maps.google.com/maps/api/js?key=AIzaSyBPsDaLY2SWLxNqHNbZzjkMBgGVisLqFx8">
-      <ng-map center="{{item.latlng[0]}},{{item.latlng[1]}}" zoom="{{getZoom(item.area)}}" map-initialized="onMapLoaded(item.latlng)" zoom-to-include-markers="true">
-        <!-- <marker position="{{item.latlng[0]}},{{item.latlng[1]}}"></marker> -->
-      </ng-map>
-    </div>
-  </div>
-</div>
+   
+  
