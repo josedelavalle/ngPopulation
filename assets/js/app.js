@@ -48,7 +48,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
   $scope.currentYear = d.getFullYear();
 
   $scope.searchYear = $scope.currentYear;
-
+  $scope.popData = [];
   $scope.notFoundMessage = "Not Found";
   $scope.allShownCountries = [];
   
@@ -87,6 +87,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
         $scope.allShownCountries.push(thisCountry);
         //console.log('all', $scope.allShownCountries);
         console.log('got ' + $scope.searchYear + ' ' + thisCountry + ' data', msg.data);
+        $scope.popData.push(msg.data);
         var totalMales = 0;
         var totalFemales = 0;
         for (i = 0; i < msg.data.length; i = i + $scope.ageInterval) {
@@ -167,7 +168,11 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
   };
 
 
-
+  $scope.getTotal = function(i) {
+    return $scope.popData[i].reduce( function(a, b){
+        return a + b['total'];
+    }, 0);
+  };
 
   $scope.onMapLoaded = function (item) {
     console.log('map loaded', item);
