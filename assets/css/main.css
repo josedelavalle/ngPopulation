@@ -47,11 +47,17 @@
   to {
     transform: translateY(0); } }
 
+#header-map .ng-enter {
+  animation: slideInUp 1s ease-in-out; }
+
 /*------------------------------*/
 /*----- Margins & Paddings -----*/
 /*------------------------------*/
 .margin-0 {
   margin: 0 !important; }
+
+.margin-auto {
+  margin: auto; }
 
 .margin-left-0 {
   margin-left: 0px !important; }
@@ -128,6 +134,9 @@
 .margin-bottom-20 {
   margin-bottom: 20px; }
 
+.margin-bottom-50 {
+  margin-bottom: 50px; }
+
 .margin-bottom-80 {
   margin-bottom: 80px; }
 
@@ -144,7 +153,10 @@
   padding: 10px; }
 
 .padding-top-0 {
-  padding-top: 0; }
+  padding-top: 0 !important; }
+
+.padding-top-5 {
+  padding-top: 5px; }
 
 .padding-bottom-0 {
   padding-bottom: 0; }
@@ -1256,6 +1268,9 @@ body {
     -ms-animation: none !important;
     animation: none !important; }
 
+* {
+  outline: 0; }
+
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   color: #484d55; }
@@ -1350,8 +1365,19 @@ p, ul, ol, dl, table, blockquote, form {
 #map {
   margin-top: 30px; }
 
-#listCountries {
-  font-size: 2em !important; }
+.page-input {
+  font-size: 2em !important;
+  text-align: center; }
+  .page-input.year {
+    width: 150px;
+    margin: auto; }
+
+#header-map {
+  height: 505px;
+  min-height: 450px;
+  width: 100%;
+  position: fixed;
+  top: 0; }
 
 md-input-container label {
   font-size: 1.5em !important;
@@ -1945,15 +1971,16 @@ ol.default {
     margin-left: 7em; }
   /* Wrappers */
   .wrapper {
-    padding: 6em 0 9em 0; }
+    padding: 3em 0 3em 0; }
     .wrapper .title {
+      display: flex;
       font-size: 0.9em;
-      width: 25em;
+      width: 35em;
       height: 3.25em;
       top: -3.25em;
       line-height: 3.25em;
       margin-bottom: -3.25em;
-      margin-left: -12.5em;
+      margin-left: -18.5em;
       padding-top: 0.5em; }
   #header-wrapper {
     padding: 0; }
@@ -1962,9 +1989,11 @@ ol.default {
   /* Header */
   #header {
     position: relative;
-    padding: 12em 0; }
+    padding: 15em 0; }
+    #header #header-map {
+      height: 15em; }
   .homepage #header {
-    padding: 16em 0; }
+    padding: 18em 0; }
   /* Logo */
   #logo {
     position: absolute;
@@ -1991,7 +2020,12 @@ ol.default {
     top: 5px;
     left: 0;
     width: 100%;
-    text-align: center; }
+    text-align: center;
+    z-index: 1; }
+    #nav .fa-map-marker {
+      position: relative;
+      top: 3px;
+      left: 2px; }
     #nav > ul {
       display: inline-block;
       border-radius: 0.35em;
@@ -2098,9 +2132,10 @@ ol.default {
     margin-bottom: 0; }
   /* Footer */
   #footer header.style1 {
-    padding-bottom: 0; }
+    padding-bottom: 0;
+    padding-top: 0; }
   #footer hr {
-    margin: 6em 0 6em 0; }
+    margin: 2em 0 2em 0; }
   #footer h3 {
     text-align: center; }
   /* Copyright */
@@ -2141,9 +2176,11 @@ ol.default {
     margin: 3em 0 3em 0; }
   /* Header */
   #header {
-    padding: 10em 0; }
-  .homepage #header {
     padding: 14em 0; }
+    #header #header-map {
+      height: 7em; }
+  .homepage #header {
+    padding: 18em 0; }
   /* Logo */
   #logo {
     margin-top: -0.5em !important; }
@@ -2170,8 +2207,10 @@ ol.default {
     line-height: 1.5em;
     font-size: 16px;
     letter-spacing: 0; }
-  #listCountries {
+  .page-input {
     font-size: 16px; }
+    .page-input.year {
+      margin-top: 40px; }
   #header-wrapper {
     background-attachment: scroll; }
   h2, h3, h4, h5, h6 {
@@ -2383,20 +2422,21 @@ ol.default {
   .wrapper {
     padding: 15px 15px 5em 15px; }
     .wrapper .title {
+      display: flex;
       font-size: 0.9em;
-      width: 18em;
+      width: 35em;
       height: 2.5em;
       top: -2.5em;
       line-height: 2.5em;
       margin-bottom: -2.5em;
-      margin-left: -9em;
+      margin-left: -18em;
       padding-top: 0.5em; }
       .wrapper .title:before, .wrapper .title:after {
         height: 15px;
         bottom: -15px;
         background-size: 100% 100%; }
   #header-wrapper {
-    padding: 6em 2em 6em 2em; }
+    padding: 10em 2em 10em 2em; }
   #footer-wrapper {
     padding-top: 3em; }
     #footer-wrapper .feature-list section {

@@ -1,13 +1,22 @@
 <div class="title">
 
-  	<md-input-container class="md-block" flex-gt-sm ng-if="allShownCountries.length < 5" >
+  	<md-input-container class="md-block" flex-gt-sm ng-if="allShownCountries.length < 5" ng-click="clearCountry()">
         
-        <input type="text" class="margin-top-20" id="listCountries" placeholder="Country" ng-model="selected"
-     	 	uib-typeahead="thisCountry for thisCountry in getCountries($viewValue) | orderBy: thisCountry" typeahead-focus typeahead-on-select="countrySelected();" typeahead-focus-on-select="false">
+        <input type="text" class="margin-top-20 page-input" ng-model="searchCountry"
+     	 	uib-typeahead="thisCountry for thisCountry in getCountries($viewValue)" typeahead-focus typeahead-on-select="countrySelected(searchCountry)" typeahead-focus-on-select="false">
         
     </md-input-container>
-    <div ng-if="allShownCountries.length >= 5">
+    <md-input-container class="md-block" ng-if="allShownCountries.length < 5">
+		<input class="margin-top-20 page-input year" type="number" ng-model="searchYear" ng-change="setYear()" ng-blur="countrySelected(searchCountry)" aria-label="Enter Year" max="{{currentYear}}">
+	  </md-input-container>
+    <div class="text-center margin-auto" ng-if="allShownCountries.length >= 5">
 		<h4>Max Reached</h4>
 		<i class="icon fa-trash fa-2x" ng-click="removeAllCountries()"></i>
     </div> 
   </div>
+
+  <!-- div class="row">
+	<div class="col-xs-12 text-center">
+	  
+	</div>
+  </div> -->

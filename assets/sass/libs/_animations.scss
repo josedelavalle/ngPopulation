@@ -39,6 +39,11 @@
     to      { transform: translateY(0); }
 }
 
+#header-map {
+    .ng-enter {
+        animation: slideInUp 1s ease-in-out;
+    }
+}
 
   // .ng-enter :not(.country-typeahead)          { animation: slideInRight 0.6s both ease-in-out; z-index: 8888; }
   // .ng-leave :not(.country-typeahead)           { animation: slideOutRight 0.3s both ease-in-out; z-index: 8889; }

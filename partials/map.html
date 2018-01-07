@@ -1,9 +1,5 @@
-
-<div class="12u" ng-repeat="item in dataDetails">
-
-<div map-lazy-load="https://maps.google.com/maps/api/js?key=AIzaSyBPsDaLY2SWLxNqHNbZzjkMBgGVisLqFx8">
-  <ng-map center="{{item.latlng[0]}},{{item.latlng[1]}}" zoom="{{getZoom(item.area)}}" map-initialized="onMapLoaded(item.latlng)" zoom-to-include-markers="true">
+<div class="12u" ng-repeat="item in dataDetails | unique:'name'">
+  <ng-map id="map-{{item.alpha2Code}}" center="{{item.latlng[0]}},{{item.latlng[1]}}" zoom="{{getZoom(item.area)}}" map-initialized="onMapLoaded(item)" zoom-to-include-markers="true">
     <!-- <marker position="{{item.latlng[0]}},{{item.latlng[1]}}"></marker> -->
   </ng-map>
-</div>
 </div>

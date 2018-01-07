@@ -6,38 +6,32 @@ app.config(['$routeProvider', '$locationProvider', 'ChartJsProvider', function($
 	$locationProvider.html5Mode(true);
 	$routeProvider
    .when('/', {
-    templateUrl: 'views/home.html',
-		controller: 'appController'
+    templateUrl: 'views/home.html'
   })
   .when('/1', {
     templateUrl: 'views/left-sidebar.html',
-		controller: 'appController'
   })
   .when('/2', {
-  	templateUrl: 'views/right-sidebar.html',
-		controller: 'appController'
+  	templateUrl: 'views/right-sidebar.html'
   })
   .when('/3', {
-  	templateUrl: 'views/no-sidebar.html',
-		controller: 'appController'
+  	templateUrl: 'views/no-sidebar.html'
   })
   .otherwise({
   	redirectTo: '/'
   });
 }]);
 
-app.service('CountryService', function ($resource) {
-	    //return $resource(encodeURI('http://api.population.io:80/1.0/countries'));///:user',{user: "@user"});
-			return $resource('assets/countries.json')
-});
-
 app.factory('appFactory', function ($http, $resource) {
     return {
         getCountries: function () {
-          return $http.get('http://api.population.io:80/1.0/countries');
+          //return $http.get('http://api.population.io:80/1.0/countries');
+          return $http.get('assets/countries.json')
         },
         getPopulation: function (thisYear, thisCountry) {
-            return $http.get("http://api.population.io:80/1.0/population/" + thisYear + "/" + thisCountry);
+            var url = "http://api.population.io:80/1.0/population/" + thisYear + "/" + thisCountry;
+            console.log(url);
+            return $http.get(url);
         },
         getCountryDetails: function (thisCountry) {
             return $http.get('https://restcountries.eu/rest/v1/name/' + thisCountry);
@@ -47,38 +41,52 @@ app.factory('appFactory', function ($http, $resource) {
 app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 'NgMap', function($scope, $timeout, $window, appFactory, NgMap) {
    
   defaultCountry = "United States";
+  $scope.searchCountry = defaultCountry;
   var thisCountry = defaultCountry;
-  var thisYear = 2017;
+  var d = new Date();
+  // used for max of input box
+  $scope.currentYear = d.getFullYear();
+
+  $scope.searchYear = $scope.currentYear;
+
   $scope.notFoundMessage = "Not Found";
   $scope.allShownCountries = [];
   
-  $scope.pageTitle = thisYear + " Country Population by Age and Gender";
+  $scope.pageTitle = "Country Populations by Year, Age, and Gender";
 	$scope.myLinks = ["http://ngGallery.josedelavalle.com","http://ngNews.josedelavalle.com","http://josedelavalle.com"];
   appFactory.getCountries().then(function(res) {
 
     $scope.countries = res.data.countries.filter(x => x.toUpperCase() != x);
-    console.log('----got countries', $scope.countries)
+    //console.log('----got countries', $scope.countries)
   });
   
   $scope.expanded = false;
-
+  $scope.toggleExpanded = function() {
+    $scope.expanded = !scope.expanded;
+    console.log($scope.expanded);
+  }
   $scope.data = [], $scope.dataDetails = [];
   $scope.labels = [];
   $scope.series = [];
   $scope.popTotals = [];
 	// console.log($scope.country);
-  $scope.ageInterval = 10;
+  $scope.ageInterval = 5;
   $scope.changeInterval = function() {
-    console.log('change interval', $scope.ageInterval)
-    $scope.getPop();
+    console.log('change interval', $scope.ageInterval);
+    getPop();
   };
-  $scope.getPop = function (thisCountry) {
 
-    appFactory.getPopulation('2016', thisCountry).then(function (msg) {
+  $scope.setYear = function() {
+    console.log(this.searchYear);
+    $scope.searchYear = this.searchYear
+  }
+  var getPop = function (thisCountry) {
+
+    appFactory.getPopulation($scope.searchYear, thisCountry).then(function (msg) {
         var tmpArray = [], tmpArray2 = [];
         $scope.allShownCountries.push(thisCountry);
-        console.log('all', $scope.allShownCountries);
-        console.log(msg.data);
+        //console.log('all', $scope.allShownCountries);
+        console.log('got ' + $scope.searchYear + ' ' + thisCountry + ' data', msg.data);
         var totalMales = 0;
         var totalFemales = 0;
         for (i = 0; i < msg.data.length; i = i + $scope.ageInterval) {
@@ -102,7 +110,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
 
         $scope.data.push(tmpArray);
         $scope.data.push(tmpArray2);
-        pushLabels(thisCountry, thisYear);
+        pushLabels(thisCountry, $scope.searchYear);
         console.log('scope data', $scope.data);
 
     });
@@ -113,28 +121,27 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
       $scope.labels.push(i);
 
   }
-  pushLabels = function(thisCountry, thisYear) {
+  var pushLabels = function(thisCountry, thisYear) {
     $scope.series.push([thisCountry + ' ' + thisYear + ' - Males']);
     $scope.series.push([thisCountry + ' ' + thisYear + ' - Females']);
   };
 
-  $scope.getPop(defaultCountry);
+  getPop(defaultCountry);
 
   getDetails = function(thisCountry) {
     appFactory.getCountryDetails(thisCountry).then(function (msg) {
       var found = false;
       //The United States returns two arrays the first 
       //being "territories" ie. Guam, Puerto Rico, etc.,
+      msg.data.forEach(function(obj) {
+        obj.year = $scope.searchYear;
+      });
       
-      console.log('length ' + msg.data.length);
       if (msg.data.length > 1) {
           for(i=0; i <= msg.data.length-1; i++) {
-            console.log('thiscountry' + thisCountry);
-            console.log('msgdata' + msg.data[i].name);
             if(thisCountry == msg.data[i].name) {
               $scope.dataDetails.push(msg.data[i]);
               found = true;
-              console.log('found');
             }
           }
           if (!found) {
@@ -161,17 +168,31 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
 
 
 
-  $scope.onMapLoaded = function (latlng) {
-    console.log('map loaded');
+
+  $scope.onMapLoaded = function (item) {
+    console.log('map loaded', item);
     var self = this;
     triggerResize();
-    NgMap.getMap($scope.dataDetails.length - 1).then(function(map) {
+    NgMap.getMap({id: 'map-' + item.alpha2Code}).then(function(map) {
       map.setOptions({draggable: false, zoomControl: true, scrollwheel: false, disableDoubleClickZoom: true});
-      map.setCenter({lat: latlng[0], lng: latlng[1]});
+      map.setCenter({lat: item.latlng[0], lng: item.latlng[1]});
+      map.getCenter();
       
     });
   };
 
+  $scope.headerMapLoaded = function() {
+    
+    NgMap.getMap({id: 'header-map'}).then(function(map) {
+      console.log('header map loaded', map)
+      map.setCenter({lat: 20, lng: 0});
+      map.getCenter();
+    });
+  };
+
+  $scope.clearCountry = function() {
+    $scope.searchCountry = "";
+  }
   $scope.onClick = function (points, evt) {
     // console.log(points, evt);
   };
@@ -203,22 +224,21 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
     return zoom;
   };
 
-  $scope.countrySelected = function() {
+  $scope.countrySelected = function(thisCountry) {
     
-		thisCountry = this.selected;
-    
+    if (!thisCountry) return null;
   
-    this.selected = "";
+    //this.searchCountry = "";
     
     //make sure we haven't added this before
-    if ($scope.allShownCountries.indexOf(thisCountry) < 0) {
+    //if ($scope.allShownCountries.indexOf(thisCountry) < 0) {
       
-      $scope.getPop(thisCountry);
+      getPop(thisCountry);
   		getDetails(thisCountry);
-
+      //$('#chart-section').goTo();
   		
-    }
-    $('#chart-section').goTo();
+    //}
+    
     $scope.hideKeyboard();
   };
 
@@ -241,31 +261,28 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
 
 
   $scope.getCountries = function(searchString) {
-    console.log(searchString);
     if (searchString != ' ') {
       var tempArr = [];
       for (x = 0; x < $scope.countries.length; x++) {
         if ($scope.countries[x].toLowerCase().indexOf(searchString.toLowerCase()) >= 0 && $scope.countries[x].toUpperCase() != searchString) {
-          tempArr.push($scope.countries[x]);  
+          tempArr.push($scope.countries[x]);
         }
       }
       return tempArr;
     } else {
       return $scope.countries;
     }
-    
-  }
+  };
+
   $scope.hideKeyboard = function() {
-     document.activeElement.blur();
-     var inputs = document.querySelectorAll('input');
-     for(var i=0; i < inputs.length; i++) {
-      console.log(inputs[i]);
-      inputs[i].blur();
-     }
+    document.activeElement.blur();
+    var inputs = document.querySelectorAll('input');
+    for(var i=0; i < inputs.length; i++) {
+     inputs[i].blur();
+    }
 
-    };
+  };
   
-
   $scope.isMobile = function() {
     if(window.innerWidth <= 800 && window.innerHeight <= 600) {
       return true; 
@@ -274,11 +291,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
     }
   }; 
 
-
-
 }]);
-
-
 
 app.directive('typeaheadFocus', function () {
   return {
@@ -287,8 +300,7 @@ app.directive('typeaheadFocus', function () {
 
       //trigger the popup on 'click' because 'focus'
       //is also triggered after the item selection
-      element.bind('click', function () {
-
+      element.bind('click', function (e) {
         var viewValue = ngModel.$viewValue;
 
         //restore to null value so that the typeahead can detect a change
@@ -300,7 +312,11 @@ app.directive('typeaheadFocus', function () {
         ngModel.$setViewValue(' ');
 
         //set the actual value in case there was already a value in the input
-        ngModel.$setViewValue(viewValue || ' ');
+        //ngModel.$setViewValue(viewValue || ' ');
+        ngModel.$render();
+        e.preventDefault();
+        scope.$apply();
+        console.log(ngModel);
       });
 
       //compare function that treats the empty space as a match
@@ -313,3 +329,17 @@ app.directive('typeaheadFocus', function () {
     }
   };
 });
+
+app.filter('unique', function() {
+
+  return function (arr, field) {
+    var o = {}, i, l = arr.length, r = [];
+    for(i=0; i<l;i+=1) {
+      o[arr[i][field]] = arr[i];
+    }
+    for(i in o) {
+      r.push(o[i]);
+    }
+    return r;
+  };
+})

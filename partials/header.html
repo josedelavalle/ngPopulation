@@ -1,5 +1,5 @@
 <!-- Header -->
-  <div id="header-wrapper" class="wrapper">
+  <div id="header-wrapper" class="wrapper" ng-init="showHeaderMap=true">
     <div id="header">
       
       <!-- Logo -->
@@ -8,6 +8,7 @@
           <a href="http://josedelavalle.com"><img src="favicon.ico" /></a>
         </div>
 
+
       <!-- Nav -->
         <nav id="nav">
           <ul>
@@ -15,8 +16,14 @@
             <li><a href="./1">Left Sidebar</a></li>
             <li><a href="./2">Right Sidebar</a></li>
             <li><a href="/3">No Sidebar</a></li>
+            <li>
+              <a><i class="fa fa-2x fa-map-marker" ng-click="showHeaderMap=!showHeaderMap"></i></a>
+            </li>
           </ul>
         </nav>
 
     </div>
   </div>
+<ng-map ng-if="showHeaderMap" center="20,0" zoom="2" id="header-map" map-initialized="headerMapLoaded()">
+  <marker ng-repeat="item in dataDetails" ng-if="item.latlng" position="{{item.latlng[0]}},{{item.latlng[1]}}"></marker>
+</ng-map>
