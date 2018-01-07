@@ -1030,8 +1030,9 @@
 				position: fixed;
 				display: block;
 				top: 5px;
-				left: 0;
-				width: 100%;
+				left: 50%;
+				width: auto;
+				transform: translateX(-50%);
 				text-align: center;
 				z-index: 1;
 				
