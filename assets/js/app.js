@@ -84,7 +84,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
 
     appFactory.getPopulation($scope.searchYear, thisCountry).then(function (msg) {
         var tmpArray = [], tmpArray2 = [];
-        $scope.allShownCountries.push(thisCountry);
+        $scope.allShownCountries.push({name: thisCountry, year: $scope.searchYear});
         //console.log('all', $scope.allShownCountries);
         console.log('got ' + $scope.searchYear + ' ' + thisCountry + ' data', msg.data);
         $scope.popData.push(msg.data);
@@ -153,9 +153,9 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
         $scope.dataDetails.push(msg.data[0]);
       } 
       console.log('datadetails', $scope.dataDetails);
-    }).catch (function() {
-      console.log("======ERROR=======");
-      $scope.dataDetails.push({name: thisCountry, capital: "Not Found", area: "Not Found", population: "Not Found"})
+    }).catch (function(e) {
+      console.log("======ERROR=======", e);
+      //$scope.dataDetails.push({name: thisCountry, capital: "Not Found", area: "Not Found", population: "Not Found"})
     });
   };
   
@@ -169,6 +169,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
 
 
   $scope.getTotal = function(i) {
+    if (!$scope.popData[i]) return null;
     return $scope.popData[i].reduce( function(a, b){
         return a + b['total'];
     }, 0);
@@ -229,22 +230,27 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
     return zoom;
   };
 
-  $scope.countrySelected = function(thisCountry) {
-    
-    if (!thisCountry) return null;
+  $scope.countrySelected = function(c, valid) {
+    console.log(c);
+    (!c && $scope.holdCountry) ? thisCountry = $scope.holdCountry : thisCountry = c;
+    console.log(thisCountry);
+    if (!thisCountry || !valid) return null;
   
-    //this.searchCountry = "";
+
+    
     
     //make sure we haven't added this before
-    //if ($scope.allShownCountries.indexOf(thisCountry) < 0) {
-      
+    var foundNdx = $scope.allShownCountries.findIndex(x => x.name == thisCountry && x.year == $scope.searchYear);
+    console.log(foundNdx)
+    if (foundNdx === -1) {
+      $scope.holdCountry = thisCountry;
       getPop(thisCountry);
   		getDetails(thisCountry);
       //$('#chart-section').goTo();
-  		
-    //}
+  		$scope.hideKeyboard();
+    }
     
-    $scope.hideKeyboard();
+    
   };
 
 	$scope.removeCountry = function(arrPos) {
@@ -255,6 +261,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
   	$scope.data.splice(arrPos*2, 2);
 		$scope.dataDetails.splice(arrPos, 1 );
     $scope.popTotals.splice(arrPos, 1 );
+    $scope.popData.splice(arrPos, 1);
   };
 
   $scope.removeAllCountries = function() {
@@ -262,6 +269,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
     $scope.dataDetails = [];
     $scope.allShownCountries = [];
     $scope.series = [];
+    $scope.popData = [];
   };
 
 
@@ -318,10 +326,10 @@ app.directive('typeaheadFocus', function () {
 
         //set the actual value in case there was already a value in the input
         //ngModel.$setViewValue(viewValue || ' ');
-        ngModel.$render();
-        e.preventDefault();
-        scope.$apply();
-        console.log(ngModel);
+        // ngModel.$render();
+        // e.preventDefault();
+        // scope.$apply();
+        // console.log(ngModel);
       });
 
       //compare function that treats the empty space as a match
