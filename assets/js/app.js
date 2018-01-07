@@ -26,11 +26,10 @@ app.factory('appFactory', function ($http, $resource) {
     return {
         getCountries: function () {
           //return $http.get('http://api.population.io:80/1.0/countries');
-          return $http.get('assets/countries.json')
+          return $http.get('assets/countries.json');
         },
         getPopulation: function (thisYear, thisCountry) {
             var url = "http://api.population.io:80/1.0/population/" + thisYear + "/" + thisCountry;
-            console.log(url);
             return $http.get(url);
         },
         getCountryDetails: function (thisCountry) {
@@ -63,30 +62,26 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
   $scope.expanded = false;
   $scope.toggleExpanded = function() {
     $scope.expanded = !scope.expanded;
-    console.log($scope.expanded);
-  }
+  };
+
   $scope.data = [], $scope.dataDetails = [];
   $scope.labels = [];
   $scope.series = [];
   $scope.popTotals = [];
 	// console.log($scope.country);
   $scope.ageInterval = 5;
-  $scope.changeInterval = function() {
-    console.log('change interval', $scope.ageInterval);
-    getPop();
+  
+  $scope.setYear = function() {
+    $scope.searchYear = this.searchYear;
   };
 
-  $scope.setYear = function() {
-    console.log(this.searchYear);
-    $scope.searchYear = this.searchYear
-  }
   var getPop = function (thisCountry) {
 
     appFactory.getPopulation($scope.searchYear, thisCountry).then(function (msg) {
         var tmpArray = [], tmpArray2 = [];
         $scope.allShownCountries.push({name: thisCountry, year: $scope.searchYear});
         //console.log('all', $scope.allShownCountries);
-        console.log('got ' + $scope.searchYear + ' ' + thisCountry + ' data', msg.data);
+        //console.log('got ' + $scope.searchYear + ' ' + thisCountry + ' data', msg.data);
         $scope.popData.push(msg.data);
         var totalMales = 0;
         var totalFemales = 0;
@@ -112,7 +107,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
         $scope.data.push(tmpArray);
         $scope.data.push(tmpArray2);
         pushLabels(thisCountry, $scope.searchYear);
-        console.log('scope data', $scope.data);
+        
 
     });
     
@@ -152,7 +147,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
       } else {
         $scope.dataDetails.push(msg.data[0]);
       } 
-      console.log('datadetails', $scope.dataDetails);
+      //console.log('datadetails', $scope.dataDetails);
     }).catch (function(e) {
       console.log("======ERROR=======", e);
       //$scope.dataDetails.push({name: thisCountry, capital: "Not Found", area: "Not Found", population: "Not Found"})
@@ -176,7 +171,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
   };
 
   $scope.onMapLoaded = function (item) {
-    console.log('map loaded', item);
+    //console.log('map loaded', item);
     var self = this;
     triggerResize();
     NgMap.getMap({id: 'map-' + item.alpha2Code}).then(function(map) {
@@ -190,7 +185,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
   $scope.headerMapLoaded = function() {
     
     NgMap.getMap({id: 'header-map'}).then(function(map) {
-      console.log('header map loaded', map)
+      //console.log('header map loaded', map)
       map.setCenter({lat: 20, lng: 0});
       map.getCenter();
     });
@@ -234,7 +229,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
     console.log(c);
     (!c && $scope.holdCountry) ? thisCountry = $scope.holdCountry : thisCountry = c;
     console.log(thisCountry);
-    if (!thisCountry || !valid) return null;
+    if (!thisCountry || !valid || !$scope.searchYear) return null;
   
 
     

@@ -1,6 +1,12 @@
 
      <md-content id="chart-section" ng-if="data.length > 0">
       <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="Line">
+          <md-content class="md-padding">
+
+            <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick" chart-colors="colors"></canvas>
+          </md-content>
+        </md-tab>
         <md-tab label="Bar">
           <md-content class="md-padding">
 
@@ -9,14 +15,6 @@
               </canvas>
           </md-content>
         </md-tab>
-
-        <md-tab label="Line">
-          <md-content class="md-padding">
-
-            <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick" chart-colors="colors"></canvas>
-          </md-content>
-        </md-tab>
-
         <md-tab label="Pie">
           <md-content class="md-padding">
 
