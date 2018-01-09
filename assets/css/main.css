@@ -1954,6 +1954,7 @@ ol.default {
     top: 5px;
     left: 50%;
     width: auto;
+    min-width: 670px;
     transform: translateX(-50%);
     text-align: center;
     z-index: 1; }
@@ -2152,6 +2153,9 @@ ol.default {
     font-size: 1.2em;
     letter-spacing: 0.05em;
     margin: 0 0 1em 0; }
+  .chart-title {
+    padding-top: 25px;
+    font-size: 26px !important; }
   hr {
     margin: 1em 0 1em 0; }
   /* Section/Article */

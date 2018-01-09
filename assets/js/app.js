@@ -46,6 +46,16 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
   // used for max of input box
   $scope.currentYear = d.getFullYear();
 
+  if ($window.innerWidth < 800) {
+    $scope.ageInterval = 10;
+    $scope.headerMapZoom = 1;
+    $scope.headerMapCenter = "0,0";
+  } else {
+    $scope.ageInterval = 5;
+    $scope.headerMapZoom = 2;
+    $scope.headerMapCenter = "20,0";
+  }
+
   $scope.searchYear = $scope.currentYear;
   $scope.popData = [];
   $scope.notFoundMessage = "Not Found";
@@ -69,7 +79,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
   $scope.series = [];
   $scope.popTotals = [];
 	// console.log($scope.country);
-  $scope.ageInterval = 5;
+  
   
   $scope.setYear = function() {
     $scope.searchYear = this.searchYear;
@@ -186,13 +196,15 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
     
     NgMap.getMap({id: 'header-map'}).then(function(map) {
       //console.log('header map loaded', map)
-      map.setCenter({lat: 20, lng: 0});
+      //map.setCenter({lat: 20, lng: 0});
       map.getCenter();
     });
   };
 
   $scope.clearCountry = function() {
-    $scope.searchCountry = "";
+console.log(this);
+    this.$parent.$parent.searchCountry = "";
+    console.log(this);
   }
   $scope.onClick = function (points, evt) {
     // console.log(points, evt);

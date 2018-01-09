@@ -24,6 +24,6 @@
 
     </div>
   </div>
-<ng-map ng-if="showHeaderMap" center="20,0" zoom="2" id="header-map" map-initialized="headerMapLoaded()">
+<ng-map ng-if="showHeaderMap" center="{{headerMapCenter}}" zoom="{{headerMapZoom}}" id="header-map" map-initialized="headerMapLoaded()">
   <marker ng-repeat="item in dataDetails" ng-if="item.latlng" position="{{item.latlng[0]}},{{item.latlng[1]}}"></marker>
 </ng-map>

@@ -4,7 +4,7 @@
 			<h2>{{thisData.name}}</h2>
 		</header>
 		<p>
-			{{thisData.name}} is a country located in {{thisData.subregion}} with a land mass of {{thisData.area}}.  Its capital city is {{thisData.capital}} and it has a total population of {{thisData.population}}.
+			{{thisData.name}} is a country located in {{thisData.subregion}} with a land mass of {{thisData.area.toLocaleString()}}.  Its capital city is {{thisData.capital}} and in {{thisData.year}} its total population {{thisData.year == currentYear ? 'is' : 'was'}} {{getTotal($index).toLocaleString()}}.
 		</p>
 		<a href="#" class="btn btn-danger" ng-click="removeCountry($index)">Remove</a>
 	</section>
