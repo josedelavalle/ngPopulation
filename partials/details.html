@@ -31,7 +31,7 @@
             
         </div>
         <div class="col-xs-4 col-sm-3 centered">
-            {{getTotal($index).toLocaleString()}}
+            {{getTotal(thisData).toLocaleString() || 'not found'}}
             ({{thisData.year}})
         </div>
         <div class="col-xs-4 col-sm-3 centered">

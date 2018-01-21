@@ -24,6 +24,19 @@
 
     </div>
   </div>
-<ng-map ng-if="showHeaderMap" center="{{headerMapCenter}}" zoom="{{headerMapZoom}}" id="header-map" map-initialized="headerMapLoaded()">
-  <marker ng-repeat="item in dataDetails" ng-if="item.latlng" position="{{item.latlng[0]}},{{item.latlng[1]}}"></marker>
+<ng-map ng-if="showHeaderMap" center="{{headerMapCenter}}" zoom="{{headerMapZoom}}" id="header-map" map-initialized="headerMapLoaded()" on-click="mapClicked()">
+  <marker id="marker-{{$index}}" ng-repeat="item in dataDetails" ng-if="item.latlng" position="{{item.latlng[0]}},{{item.latlng[1]}}" draggable=true on-dragend="getCurrentLocation(item)" on-click="showMarkerDetail(item, $index)"></marker>
+  <info-window id="map-iw">
+      <div class="map-iw" ng-non-bindable="">
+          <h4 class="margin-top-0">{{vm.selectedCountry.name}}</h4>
+          <div>{{vm.selectedCountry.subregion}}</div>
+          <div>Land Mass: {{vm.selectedCountry.area.toLocaleString()}} km<sup>2</sup></div>
+          <div>Capital: {{vm.selectedCountry.capital}}
+          <div ng-repeat="item in getAllCountryYears(vm.selectedCountry.name)">
+            <div>{{item.year}} Population: {{getTotal(item).toLocaleString() || 'not found'}}</div>
+          </div>
+          
+      </div>
+  </info-window>
 </ng-map>
+

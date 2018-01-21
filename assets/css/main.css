@@ -162,7 +162,7 @@
   padding-bottom: 0; }
 
 .padding-left-0 {
-  padding-left: 0; }
+  padding-left: 0 !important; }
 
 .padding-left-5 {
   padding-left: 5px; }
@@ -171,7 +171,7 @@
   padding-left: 10px; }
 
 .padding-right-0 {
-  padding-right: 0; }
+  padding-right: 0 !important; }
 
 .padding-right-5 {
   padding-right: 5px; }
@@ -1372,6 +1372,36 @@ p, ul, ol, dl, table, blockquote {
     width: 150px;
     margin: auto; }
 
+.gm-style-mtc {
+  display: none; }
+
+.md-toast-content {
+  background-color: #ddd !important;
+  padding-left: 20px;
+  padding-right: 20px; }
+
+.toast {
+  background: #ddd; }
+  .toast span {
+    background: #ddd !important;
+    color: #652415;
+    font-size: 1.4em;
+    margin: 10px 0;
+    max-width: 100px; }
+
+md-toast.md-center {
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin: auto !important; }
+
+.toast-close {
+  color: #652415;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 2em; }
+
 #header-map {
   height: 505px;
   min-height: 450px;
@@ -1793,6 +1823,9 @@ ol.default {
 
 /* Desktop + Tablet */
 @media screen and (min-width: 737px) {
+  md-toast.md-center {
+    min-width: 670px;
+    min-height: 66px; }
   /* Basic */
   body, input, select, textarea {
     font-size: 13pt;

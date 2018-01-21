@@ -35,14 +35,27 @@ app.factory('appFactory', function ($http, $resource) {
         getCountryDetails: function (thisCountry) {
             return $http.get('https://restcountries.eu/rest/v1/name/' + thisCountry);
         },
+        reverseGecode: function(loc) {
+            return $http.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + loc + '&components=administrative_area&key=AIzaSyAFzBg6EWivP2e2GR0DmXdosJKqJylV9AQ');
+        }
     };
 });
-app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 'NgMap', function($scope, $timeout, $window, appFactory, NgMap) {
+
+app.controller('ToastCtrl', ToastCtrl);
+ToastCtrl.$inject = ['$scope', '$mdToast', 'data'];
+function ToastCtrl($scope, $mdToast, data) {
+    console.log('toast controller', data);
+    $scope.data = data;
+    $scope.closeToast = function() {
+        $mdToast.hide();
+    };
+}
+
+app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 'NgMap', '$mdToast', function($scope, $timeout, $window, appFactory, NgMap, $mdToast) {
    
   defaultCountry = "United States";
   $scope.searchCountry = defaultCountry;
-  var thisCountry = defaultCountry;
-  var d = new Date();
+  var thisCountry = defaultCountry, vm = this, d = new Date();
   // used for max of input box
   $scope.currentYear = d.getFullYear();
 
@@ -53,7 +66,7 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
   } else {
     $scope.ageInterval = 5;
     $scope.headerMapZoom = 2;
-    $scope.headerMapCenter = "20,0";
+    $scope.headerMapCenter = "37,0";
   }
 
   $scope.searchYear = $scope.currentYear;
@@ -69,10 +82,11 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
     //console.log('----got countries', $scope.countries)
   });
   
-  $scope.expanded = false;
+  $scope.expanded = true;
   $scope.toggleExpanded = function() {
     $scope.expanded = !scope.expanded;
   };
+
 
   $scope.data = [], $scope.dataDetails = [];
   $scope.labels = [];
@@ -80,7 +94,22 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
   $scope.popTotals = [];
 	// console.log($scope.country);
   
-  
+  $scope.showCustomToast = function(data, delay) {
+    if (!delay) delay = 10000;
+
+    $mdToast.show({
+      hideDelay   : delay,
+      position    : 'top center',
+      parent      : '#page-wrapper',
+      controller  : 'ToastCtrl',
+      templateUrl : '/partials/toast.html',
+      locals: {
+        data: data
+      }
+    });
+  };
+  $scope.showCustomToast("Click anywhere on the map to add that country's population to the data set or drag the marker wherever you wish to replace.");
+
   $scope.setYear = function() {
     $scope.searchYear = this.searchYear;
   };
@@ -134,6 +163,14 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
 
   getPop(defaultCountry);
 
+  $scope.showMarkerDetail = function (e, item, ndx) {
+        console.log(this)
+        vm.selectedCountry = item;
+        $scope.activeMarker = ndx;
+        console.log(vm.selectedCountry)
+        vm.map.showInfoWindow('map-iw', this);
+  };
+
   getDetails = function(thisCountry) {
     appFactory.getCountryDetails(thisCountry).then(function (msg) {
       var found = false;
@@ -158,6 +195,13 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
         $scope.dataDetails.push(msg.data[0]);
       } 
       //console.log('datadetails', $scope.dataDetails);
+      //if ($scope.dataDetails.length == 1) {
+      $timeout(function() {
+        showInfoWindow($scope.dataDetails.length - 1);
+      })
+        
+      //}
+      
     }).catch (function(e) {
       console.log("======ERROR=======", e);
       //$scope.dataDetails.push({name: thisCountry, capital: "Not Found", area: "Not Found", population: "Not Found"})
@@ -172,10 +216,20 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
     $window.dispatchEvent(evt);
   };
 
-
-  $scope.getTotal = function(i) {
-    if (!$scope.popData[i]) return null;
-    return $scope.popData[i].reduce( function(a, b){
+  $scope.getAllCountryYears = function(item) {
+      return $scope.dataDetails.filter(x => x.name == item);
+  };
+  $scope.getTotal = function(item) {
+    var data;
+    $scope.popData.forEach(function(d) { 
+      var found = d.filter(x => x.country == item.name && x.year == item.year);
+      if ((found) && found.length > 0) {
+        data = found;
+        return;
+      }
+    });
+    if (!data) return null;
+    return data.reduce( function(a, b){
         return a + b['total'];
     }, 0);
   };
@@ -195,17 +249,22 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
   $scope.headerMapLoaded = function() {
     
     NgMap.getMap({id: 'header-map'}).then(function(map) {
-      //console.log('header map loaded', map)
+      console.log('header map loaded', map);
       //map.setCenter({lat: 20, lng: 0});
+      map.setOptions({draggableCursor:'crosshair'});
+      vm.map = map;
       map.getCenter();
     });
   };
 
-  $scope.clearCountry = function() {
-console.log(this);
-    this.$parent.$parent.searchCountry = "";
-    console.log(this);
-  }
+  var showInfoWindow = function(i) {
+    console.log(i);
+    vm.selectedCountry = $scope.dataDetails[i];
+    NgMap.getMap({id: 'header-map'}).then(function(map) {
+      map.showInfoWindow('map-iw', "marker-" + i);
+    });
+  };
+  
   $scope.onClick = function (points, evt) {
     // console.log(points, evt);
   };
@@ -238,17 +297,14 @@ console.log(this);
   };
 
   $scope.countrySelected = function(c, valid) {
-    console.log(c);
     (!c && $scope.holdCountry) ? thisCountry = $scope.holdCountry : thisCountry = c;
-    console.log(thisCountry);
+    
     if (!thisCountry || !valid || !$scope.searchYear) return null;
-  
-
-    
-    
+    if ($scope.dataDetails.length == 5) {
+      $scope.removeCountry(0);
+    }
     //make sure we haven't added this before
     var foundNdx = $scope.allShownCountries.findIndex(x => x.name == thisCountry && x.year == $scope.searchYear);
-    console.log(foundNdx)
     if (foundNdx === -1) {
       $scope.holdCountry = thisCountry;
       getPop(thisCountry);
@@ -256,7 +312,7 @@ console.log(this);
       //$('#chart-section').goTo();
   		$scope.hideKeyboard();
     }
-    
+    $scope.searchCountry = thisCountry;
     
   };
 
@@ -279,7 +335,65 @@ console.log(this);
     $scope.popData = [];
   };
 
+  $scope.restoreCountry = function() {
+    console.log($scope.searchCountry, $scope.holdCountry)
+    if (!$scope.searchCountry) $scope.searchCountry = $scope.holdCountry;
+  };
 
+  $scope.mapClicked = function(e) {
+    var pos = e.latLng;
+    appFactory.reverseGecode(pos.lat() + "," + pos.lng()).then(function(res) {
+      if (res.data.results.length > 0) {
+
+
+        var country = getCountryFromGeocodedData(res.data.results);
+        console.log(country);
+        $scope.searchCountry = country;
+        $scope.countrySelected(country, true);
+      } else {
+        $scope.showCustomToast("Nobody lives in the ocean. :)", 1000);
+      }
+    }).catch(function(e) {
+      console.log('error reverse geocoding', e);
+    });
+    //onsole.log(e.latLng.lat(), e.latLng.lng());
+  };
+
+  $scope.yearKeyPress = function(e, valid) {
+    if (!valid) return;
+    if (e.keyCode == 13) {
+      $scope.hideKeyboard();
+    }
+  };
+
+  $scope.getCurrentLocation = function(e, item) {
+    console.log(item);
+    
+      var pos = this.getPosition();
+        
+      appFactory.reverseGecode(pos.lat() + "," + pos.lng()).then(function(res) {
+        var country = getCountryFromGeocodedData(res.data.results);
+        $scope.searchCountry = country;
+        var indices = $scope.dataDetails.map((e, i) => e.name === item.name ? i : '').filter(String);
+        indices.reverse().forEach(function(ndx) {
+          $scope.removeCountry(ndx);
+        });
+        $scope.countrySelected(country, true);
+        //showInfoWindow($scope.dataDetails.length - 1); 
+      }).catch(function(e) {
+        //console.log('error reverse geocoding', e);
+      });
+  
+        //console.log('val', val);
+        
+    };
+
+
+   
+
+    function getCountryFromGeocodedData(res) {
+        return res[res.length -1].formatted_address;
+    }
   $scope.getCountries = function(searchString) {
     if (searchString != ' ') {
       var tempArr = [];

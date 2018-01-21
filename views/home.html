@@ -1,7 +1,7 @@
 
 <!-- <div ng-include="'partials/intro.html'"></div> -->
 <!-- Main -->
-<div class="wrapper style2" ng-init="expanded=false">
+<div class="wrapper style2">
   <div ng-include="'partials/search.html'"></div>
   <div id="main" class="container">
         
@@ -14,10 +14,10 @@
     </h2>
     <hr>
     <div class="row">
-      <div class="col-xs-12" ng-class="{'col-sm-6': expanded==false}">
+      <div class="col-xs-12" ng-class="{'col-md-6': expanded==false}">
         <div ng-include="'partials/chart.html'"></div>
       </div>
-      <div class="col-xs-12" ng-class="{'col-sm-6': expanded==false}">
+      <div class="col-xs-12" ng-class="{'col-md-6': expanded==false}">
         <div ng-include="'partials/details.html'"></div>
       </div>
     </div>

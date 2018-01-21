@@ -205,6 +205,42 @@
 			margin: auto;		
 		}
 	}
+	.gm-style-mtc {
+		display: none;
+	}
+	.md-toast-content {
+		background-color: #ddd !important;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	.toast {
+		background: #ddd;
+		span {
+			background: #ddd !important;
+			color: $text-color;
+			font-size: 1.4em;
+			//padding: 5px;
+			margin: 10px 0;
+			max-width: 100px;
+		}
+	}
+	md-toast.md-center {
+
+		position: fixed;
+		left: 0;
+		right: 0;
+		//left: 50%;
+		margin: auto !important;
+		//transform: translate3d(-50%, 0, 0);
+		//transform: translateX(-50%); 
+	}
+	.toast-close {
+		color: $text-color;
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		font-size: 2em;
+	}
 	#header-map {
 		height: 505px;
 		min-height: 450px;
@@ -762,8 +798,13 @@
 
 	@include breakpoint(desktop) {
 
-		/* Basic */
+			md-toast.md-center {
+				min-width: 670px;
+				min-height: 66px;
 
+			}
+		/* Basic */
+			
 			body, input, select, textarea {
 				font-size: 13pt;
 				line-height: 1.75em;
