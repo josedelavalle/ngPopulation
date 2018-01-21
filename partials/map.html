@@ -1,5 +1,5 @@
 <div class="12u" ng-repeat="item in dataDetails | unique:'name'">
-  <ng-map id="map-{{item.alpha2Code}}" center="{{item.latlng[0]}},{{item.latlng[1]}}" zoom="{{getZoom(item.area)}}" map-initialized="onMapLoaded(item)" zoom-to-include-markers="true">
+  <ng-map id="map-{{item.alpha2Code}}" center="{{item.latlng[0]}},{{item.latlng[1]}}" zoom="{{getZoom(item.area)}}" draggable="false" map-initialized="onMapLoaded(item)" zoom-to-include-markers="true">
     <!-- <marker position="{{item.latlng[0]}},{{item.latlng[1]}}"></marker> -->
   </ng-map>
 </div>

@@ -234,17 +234,21 @@ app.controller("appController", ['$scope', '$timeout', '$window', 'appFactory', 
     }, 0);
   };
 
-  $scope.onMapLoaded = function (item) {
-    //console.log('map loaded', item);
-    var self = this;
-    triggerResize();
-    NgMap.getMap({id: 'map-' + item.alpha2Code}).then(function(map) {
-      map.setOptions({draggable: false, zoomControl: true, scrollwheel: false, disableDoubleClickZoom: true});
-      map.setCenter({lat: item.latlng[0], lng: item.latlng[1]});
-      map.getCenter();
-      
-    });
-  };
+  // $scope.onMapLoaded = function (item) {
+  //   console.log('map loaded', item);
+  //   var self = this;
+  //   //triggerResize();
+  //   $timeout(function() {
+  //     NgMap.getMap({id: 'map-' + item.alpha2Code}).then(function(map) {
+  //       console.log('got map', map);
+  //       map.setOptions({draggable: false, zoomControl: true, scrollwheel: false, disableDoubleClickZoom: true});
+  //       map.setCenter({lat: item.latlng[0], lng: item.latlng[1]});
+  //       map.getCenter();
+  //       console.log(map)
+  //     });
+  //   });
+    
+  // };
 
   $scope.headerMapLoaded = function() {
     
